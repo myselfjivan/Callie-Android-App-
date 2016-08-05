@@ -18,6 +18,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".UI.Pregister"
+            android:label="Registraion"></activity>
+        <activity
+            android:name=".UI.Pverify"
+            android:label="Verification">
+
+        </activity>
     </application>
 
 </manifest>
