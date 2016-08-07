@@ -19,10 +19,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".UI.Pregister"
+            android:name=".ui.Pregister"
             android:label="Registraion"></activity>
         <activity
-            android:name=".UI.Pverify"
+            android:name=".ui.Pverify"
             android:label="Verification">
 
         </activity>

@@ -1,4 +1,4 @@
-package com.status.callie.Services;
+package com.status.callie.services;
 
 import android.app.Service;
 import android.content.Intent;

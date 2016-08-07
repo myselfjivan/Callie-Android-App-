@@ -1,4 +1,4 @@
-package com.status.callie.UI;
+package com.status.callie.ui;
 
 import android.app.Activity;
 
