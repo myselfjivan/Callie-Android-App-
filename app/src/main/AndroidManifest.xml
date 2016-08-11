@@ -19,13 +19,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.Pregister"
-            android:label="Registraion"></activity>
-        <activity
             android:name=".ui.Pverify"
-            android:label="Verification">
-
-        </activity>
+            android:label="Registraion"></activity>
     </application>
 
 </manifest>
