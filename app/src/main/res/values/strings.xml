@@ -8,7 +8,7 @@
 
     <string name="hint_mobile">Mobile No.</string>
     <string name="hint_name">Fullname</string>
-    <string name="btn_login">LOGIN</string>
+    <string name="btn_verify">I am in</string>
     <string name="btn_register">REGISTER</string>
     <string name="btn_link_to_register">Not a member? Sign up now.</string>
     <string name="btn_link_to_login">Already registred! Login Me.</string>

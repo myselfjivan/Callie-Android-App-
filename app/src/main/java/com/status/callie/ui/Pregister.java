@@ -14,8 +14,11 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.status.callie.CallieController;
+import com.status.callie.Model.SqliteHelper;
 import com.status.callie.R;
 import com.status.callie.accounts.AccountConstants;
+import com.status.callie.services.CallieSessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,37 +29,30 @@ import java.util.Map;
 /**
  * Created by jivan.ghadage on 8/11/2016.
  */
-public class Pregister extends Activity{
+public class Pregister extends Activity {
     private static final String TAG = Pregister.class.getSimpleName();
     private Button btnRegister;
-    private Button btnLinkToLogin;
-    private EditText inputFullName;
-    private EditText inputEmail;
-    private EditText inputPassword;
+    private EditText inputMobile;
     private ProgressDialog pDialog;
-    //private SessionManager session;
-    //private SQLiteHandler db;
+    private CallieSessionManager session;
+    private SqliteHelper db;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pregister);
-
-        inputFullName = (EditText) findViewById(R.id.name);
-        inputEmail = (EditText) findViewById(R.id.email);
-        inputPassword = (EditText) findViewById(R.id.password);
-        btnRegister = (Button) findViewById(R.id.btnRegister);
-        btnLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
+        btnRegister = (Button) findViewById(R.id.btn_register);
+        inputMobile = (EditText) findViewById(R.id.mobile);
 
         // Progress dialog
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
         // Session manager
-        session = new SessionManager(getApplicationContext());
+        session = new CallieSessionManager(getApplicationContext());
 
         // SQLite database handler
-        db = new SQLiteHandler(getApplicationContext());
+        db = new SqliteHelper(getApplicationContext());
 /*
         // Check if user is already logged in or not
         if (session.isLoggedIn()) {
@@ -70,12 +66,10 @@ public class Pregister extends Activity{
         // Register Button Click event
         btnRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                String name = inputFullName.getText().toString().trim();
-                String email = inputEmail.getText().toString().trim();
-                String password = inputPassword.getText().toString().trim();
+                String mobile = inputMobile.getText().toString().trim();
 
-                if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-                    registerUser(name, email, password);
+                if (!mobile.isEmpty()) {
+                    registerUser(mobile);
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "Please enter your details!", Toast.LENGTH_LONG)
@@ -101,8 +95,7 @@ public class Pregister extends Activity{
      * Function to store user in MySQL database will post params(tag, name,
      * email, password) to register url
      */
-    private void registerUser(final String name, final String email,
-                              final String password) {
+    private void registerUser(final String mobile) {
         // Tag used to cancel the request
         String tag_string_req = "req_register";
 
@@ -135,12 +128,13 @@ public class Pregister extends Activity{
                         //db.addUser(name, email, uid, created_at);
 
                         Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
-
+/*
                         // Launch login activity
                         Intent intent = new Intent(
                                 RegisterActivity.this,
                                 LoginActivity.class);
                         startActivity(intent);
+*/
                         finish();
                     } else {
 
@@ -170,9 +164,7 @@ public class Pregister extends Activity{
             protected Map<String, String> getParams() {
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("name", name);
-                params.put("email", email);
-                params.put("password", password);
+                params.put("mobile", mobile);
 
                 return params;
             }
@@ -180,7 +172,7 @@ public class Pregister extends Activity{
         };
 
         // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        CallieController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
     private void showDialog() {

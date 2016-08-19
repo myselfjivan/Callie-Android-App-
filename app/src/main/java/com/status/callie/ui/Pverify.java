@@ -34,9 +34,7 @@ import java.util.Map;
 public class Pverify extends Activity {
     private static final String TAG = Pverify.class.getSimpleName();
     private Button btnLogin;
-    private Button btnLinkToRegister;
-    private EditText inputEmail;
-    private EditText inputPassword;
+    private EditText inpputOtp;
     private ProgressDialog pDialog;
     private CallieSessionManager session;
     private SqliteHelper db;
@@ -46,10 +44,8 @@ public class Pverify extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pregister);
 
-        inputEmail = (EditText) findViewById(R.id.email);
-        inputPassword = (EditText) findViewById(R.id.password);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
+        inpputOtp = (EditText) findViewById(R.id.otp);
+        btnLogin = (Button) findViewById(R.id.btnverify);
 
         // Progress dialog
         pDialog = new ProgressDialog(this);
@@ -73,13 +69,12 @@ public class Pverify extends Activity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                String email = inputEmail.getText().toString().trim();
-                String password = inputPassword.getText().toString().trim();
+                String otp = inpputOtp.getText().toString().trim();
 
                 // Check for empty data in the form
-                if (!email.isEmpty() && !password.isEmpty()) {
+                if (!otp.isEmpty()) {
                     // login user
-                    checkLogin(email, password);
+                    checkLogin(otp);
                 } else {
                     // Prompt user to enter credentials
                     Toast.makeText(getApplicationContext(),
@@ -107,7 +102,7 @@ public class Pverify extends Activity {
     /**
      * function to verify login details in mysql db
      */
-    private void checkLogin(final String email, final String password) {
+    private void checkLogin(final String otp) {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 
@@ -115,7 +110,7 @@ public class Pverify extends Activity {
         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AccountConstants.APP_NOTE_URL+"oauth/request/", new Response.Listener<String>() {
+                AccountConstants.APP_NOTE_URL + "oauth/request/", new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -175,8 +170,7 @@ public class Pverify extends Activity {
             protected Map<String, String> getParams() {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("email", email);
-                params.put("password", password);
+                params.put("otp", otp);
 
                 return params;
             }

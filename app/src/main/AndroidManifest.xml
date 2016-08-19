@@ -20,7 +20,11 @@
         </activity>
         <activity
             android:name=".ui.Pverify"
-            android:label="Registraion"></activity>
+            android:label="Registraion">
+
+        </activity>
+
+        <uses-permission android:name="android.permission.INTERNET" />
     </application>
 
 </manifest>
