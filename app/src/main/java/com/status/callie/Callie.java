@@ -1,7 +1,9 @@
 package com.status.callie;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Movie;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -18,35 +20,55 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.status.callie.Model.AccessToken;
 import com.status.callie.Model.SqliteHelper;
 import com.status.callie.accounts.AccountConstants;
+import com.status.callie.services.ApiClient;
+import com.status.callie.services.ApiInterface;
 import com.status.callie.services.CallieSessionManager;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
+
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 
 public class Callie extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private ProgressDialog pDialog;
-    private CallieSessionManager session;
-    private SqliteHelper db;
     public String TAG = "token genration";
+    public static final String JSON_URL = AccountConstants.APP_NOTE_URL + "/oauth/request/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //sendRequest();
         setContentView(R.layout.activity_callie);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        tokenGeneration();
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +87,22 @@ public class Callie extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        ApiInterface apiService =
+                ApiClient.getClient().create(ApiInterface.class);
+        Call<AccessToken> call = apiService.getOauthRequest(AccountConstants.GRANT_TYPE, AccountConstants.CLIENT_ID, AccountConstants.CLIENT_SECRET, AccountConstants.USERNAME, AccountConstants.PASSWORD);
+        call.enqueue(new Callback<AccessToken>() {
+            @Override
+            public void onResponse(Call<AccessToken> call, retrofit2.Response<AccessToken> response) {
+                Log.d(TAG, "Access Token: success " + response.headers());
+                Log.d(TAG, "Access Token: body " + response.raw());
+            }
+
+            @Override
+            public void onFailure(Call<AccessToken> call, Throwable t) {
+                Log.e("on failure", t.toString());
+            }
+        });
     }
 
     @Override
@@ -124,57 +162,4 @@ public class Callie extends AppCompatActivity
         return true;
     }
 
-    private void tokenGeneration() {
-        // Tag used to cancel the request
-        String tag_string_req = "req_login";
-
-        pDialog.setMessage("Logging in ...");
-        showDialog();
-
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                AccountConstants.APP_NOTE_URL + "/oauth/request/", new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "Login Response: " + response.toString());
-                hideDialog();
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Login Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
-                hideDialog();
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() {
-                // Posting parameters to login url
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("grant_type", AccountConstants.GRANT_TYPE);
-                params.put("client_id", AccountConstants.CLIENT_ID);
-                params.put("client_secret", AccountConstants.CLIENT_SECRET);
-                params.put("username", AccountConstants.USERNAME);
-                params.put("password", AccountConstants.PASSWORD);
-                return params;
-            }
-
-        };
-
-        // Adding request to request queue
-        CallieController.getInstance().addToRequestQueue(strReq, tag_string_req);
-    }
-
-    private void showDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
-    }
-
-    private void hideDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
-    }
 }
