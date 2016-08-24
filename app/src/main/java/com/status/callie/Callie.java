@@ -14,10 +14,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.status.callie.Model.AccessToken;
+import com.status.callie.Model.TokenRequest;
+import com.status.callie.Model.TokenResponse;
 import com.status.callie.accounts.AccountConstants;
 import com.status.callie.services.ApiClient;
 import com.status.callie.services.ApiInterface;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,7 +34,6 @@ public class Callie extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //sendRequest();
         setContentView(R.layout.activity_callie);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -55,18 +57,35 @@ public class Callie extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ApiInterface apiService =
-                ApiClient.getClient().create(ApiInterface.class);
-        Call<AccessToken> call = apiService.getOauthRequest(AccountConstants.GRANT_TYPE, AccountConstants.CLIENT_ID, AccountConstants.CLIENT_SECRET, AccountConstants.USERNAME, AccountConstants.PASSWORD);
-        call.enqueue(new Callback<AccessToken>() {
+        TokenRequest tokenRequest = new TokenRequest();
+        tokenRequest.setGrant_type(AccountConstants.GRANT_TYPE);
+        tokenRequest.setClient_id(AccountConstants.CLIENT_ID);
+        tokenRequest.setClient_secret(AccountConstants.CLIENT_SECRET);
+        tokenRequest.setUsername(AccountConstants.USERNAME);
+        tokenRequest.setPassword(AccountConstants.PASSWORD);
+
+        ApiInterface apiService = null;
+        try {
+            apiService = ApiClient.getClient().create(ApiInterface.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        Call<TokenResponse> call = apiService.getTokenAccess(tokenRequest);
+        call.enqueue(new Callback<TokenResponse>() {
             @Override
-            public void onResponse(Call<AccessToken> call, retrofit2.Response<AccessToken> response) {
+            public void onResponse(Call<TokenResponse> call, retrofit2.Response<TokenResponse> response) {
+                TokenResponse accessToken = response.body();
+
+                //Log.d(TAG, "onResponse: Access Token"+accessToken.getAccessToken());
                 Log.d(TAG, "Access Token: success " + response.headers());
+                Log.d("Retrofit Logs", "" + response.errorBody().toString());
                 Log.d(TAG, "Access Token: body " + response.raw());
             }
 
             @Override
-            public void onFailure(Call<AccessToken> call, Throwable t) {
+            public void onFailure(Call<TokenResponse> call, Throwable t) {
                 Log.e("on failure", t.toString());
             }
         });
