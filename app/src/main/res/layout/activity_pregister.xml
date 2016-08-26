@@ -15,6 +15,13 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
 
+        <Spinner
+            android:id="@+id/country_code"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+        </Spinner>
+
         <EditText
             android:id="@+id/mobile"
             android:layout_width="fill_parent"

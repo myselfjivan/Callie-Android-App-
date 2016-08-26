@@ -85,7 +85,7 @@ public class Pverify extends Activity {
 
         });
 /*
-        // Link to Register Screen
+        // Link to PregisterRequest Screen
         btnLinkToRegister.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {

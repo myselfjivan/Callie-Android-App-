@@ -10,4 +10,5 @@ public class AccountConstants {
     public static String CLIENT_SECRET = "*nc(ksuyebx&nxVX744N7^&";
     public static String USERNAME = "uNt^#xc74N0^&mx.^";
     public static String PASSWORD = "1<.bm$*nchdN4C&5";
+    public static String aquiredAccessToken;
 }

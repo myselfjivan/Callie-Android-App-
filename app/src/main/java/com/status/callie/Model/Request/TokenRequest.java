@@ -1,4 +1,4 @@
-package com.status.callie.Model;
+package com.status.callie.Model.Request;
 
 /**
  * Created by jivan.ghadage on 8/24/2016.
