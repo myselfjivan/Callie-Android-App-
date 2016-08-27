@@ -21,7 +21,7 @@ public class CallieSessionManager {
     int PRIVATE_MODE = 0;
 
     // Shared preferences file name
-    private static final String PREF_NAME = "AndroidHiveLogin";
+    private static final String PREF_NAME = "Callie";
 
     private static final String KEY_IS_LOGGEDIN = "isLoggedIn";
 

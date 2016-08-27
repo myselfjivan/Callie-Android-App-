@@ -10,22 +10,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.status.callie.CallieController;
+import com.hbb20.CountryCodePicker;
 import com.status.callie.Model.Register;
+import com.status.callie.Model.Response.PregisterResponse;
 import com.status.callie.Model.SqliteHelper;
 import com.status.callie.R;
 import com.status.callie.accounts.AccountConstants;
 import com.status.callie.services.CallieSessionManager;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by jivan.ghadage on 8/11/2016.
@@ -33,12 +24,15 @@ import java.util.Map;
 public class Pregister extends Activity {
     private static final String TAG = Pregister.class.getSimpleName();
     private Button btnRegister;
-    private EditText inputMobile;
-    private Spinner country_code;
+    private EditText inputMobileEditText;
+    private Spinner countryCodeSpinner;
+    private String countryCode;
     private ProgressDialog pDialog;
     private CallieSessionManager session;
     private SqliteHelper db;
     Register register = new Register();
+    PregisterResponse pregisterResponse = new PregisterResponse();
+    CountryCodePicker ccp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,10 +40,12 @@ public class Pregister extends Activity {
         setContentView(R.layout.activity_pregister);
 
         btnRegister = (Button) findViewById(R.id.btn_register);
-        inputMobile = (EditText) findViewById(R.id.mobile);
-        country_code = (Spinner) findViewById(R.id.country_code);
+        inputMobileEditText = (EditText) findViewById(R.id.mobile);
+        //countryCodeSpinner = (Spinner) findViewById(R.id.ccp);
+        //ccp = (CountryCodePicker) getView().findViewById(R.id.ccp);
+        ccp = (CountryCodePicker) findViewById(R.id.ccp);
 
-        country_code.setOnClickListener((View.OnClickListener) this);
+        //countryCodeSpinner.setOnClickListener((View.OnClickListener) this);
 
         // Progress dialog
         pDialog = new ProgressDialog(this);
@@ -70,10 +66,12 @@ public class Pregister extends Activity {
             finish();
         }
 */
+        countryCode = ccp.getSelectedCountryCodeWithPlus();
+
         // PregisterRequest Button Click event
         btnRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                String mobile = inputMobile.getText().toString().trim();
+                String mobile = inputMobileEditText.getText().toString().trim();
 
                 if (!mobile.isEmpty()) {
                     registerUser(mobile);
@@ -102,8 +100,11 @@ public class Pregister extends Activity {
      * Function to store user in MySQL database will post params(tag, name,
      * email, password) to register url
      */
-    private void registerUser(final String mobile) {
-        register.Pregister(AccountConstants.aquiredAccessToken, mobile);
+    private void registerUser(String mobile) {
+
+        if (register.Pregister(AccountConstants.aquiredAccessToken, countryCode, mobile) != null) {
+            Log.d(TAG, "registerUser: I am set");
+        }
 
     }
 

@@ -42,6 +42,7 @@ public class AccessToken {
             public void onResponse(Call<TokenResponse> call, retrofit2.Response<TokenResponse> response) {
                 TokenResponse tokenResponse = response.body();
                 accessTokne = tokenResponse.getAccessToken();
+                AccountConstants.aquiredAccessToken = accessTokne;
             }
 
             @Override

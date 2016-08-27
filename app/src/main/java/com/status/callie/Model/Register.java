@@ -37,8 +37,10 @@ public class Register {
             @Override
             public void onResponse(retrofit2.Call<PregisterResponse> call, retrofit2.Response<PregisterResponse> response) {
                 PregisterResponse pregisterResponse = response.body();
-                message = pregisterResponse.getMessage();
-                status_code = pregisterResponse.getMessage();
+                //message = pregisterResponse.getMessage();
+                pregisterResponse.setMessage(pregisterResponse.getMessage());
+                pregisterResponse.setStatus_code(pregisterResponse.getStatus_code());
+                //status_code = pregisterResponse.getMessage();
             }
 
             @Override

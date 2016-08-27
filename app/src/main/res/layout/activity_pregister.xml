@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/bg_login"
@@ -15,12 +16,11 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
 
-        <Spinner
-            android:id="@+id/country_code"
+        <com.hbb20.CountryCodePicker
+            android:id="@+id/ccp"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-        </Spinner>
+            android:layout_height="wrap_content"
+            app:defaultNameCode="IN" />
 
         <EditText
             android:id="@+id/mobile"
