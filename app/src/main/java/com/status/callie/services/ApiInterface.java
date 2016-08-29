@@ -10,6 +10,7 @@ import com.status.callie.Model.Response.PregisterResponse;
 import com.status.callie.Model.Response.TokenResponse;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 

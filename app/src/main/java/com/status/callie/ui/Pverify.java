@@ -42,7 +42,7 @@ public class Pverify extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pregister);
+        setContentView(R.layout.activity_pverify);
 
         inpputOtp = (EditText) findViewById(R.id.otp);
         btnLogin = (Button) findViewById(R.id.btnverify);

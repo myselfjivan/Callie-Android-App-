@@ -1,95 +1,39 @@
 package com.status.callie.ui;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
+import android.app.Fragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.hbb20.CountryCodePicker;
 import com.status.callie.Model.Register;
-import com.status.callie.Model.Response.PregisterResponse;
-import com.status.callie.Model.SqliteHelper;
 import com.status.callie.R;
 import com.status.callie.accounts.AccountConstants;
-import com.status.callie.services.CallieSessionManager;
 
 /**
  * Created by jivan.ghadage on 8/11/2016.
  */
-public class Pregister extends Activity {
+public class Pregister extends Fragment implements View.OnClickListener {
     private static final String TAG = Pregister.class.getSimpleName();
     private Button btnRegister;
     private EditText inputMobileEditText;
-    private Spinner countryCodeSpinner;
     private String countryCode;
-    private ProgressDialog pDialog;
-    private CallieSessionManager session;
-    private SqliteHelper db;
     Register register = new Register();
-    PregisterResponse pregisterResponse = new PregisterResponse();
     CountryCodePicker ccp;
+
+    private SharedPreferences pref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pregister);
-
-        btnRegister = (Button) findViewById(R.id.btn_register);
-        inputMobileEditText = (EditText) findViewById(R.id.mobile);
-        ccp = (CountryCodePicker) findViewById(R.id.ccp);
 
 
-        // Progress dialog
-        pDialog = new ProgressDialog(this);
-        pDialog.setCancelable(false);
-
-        // Session manager
-        session = new CallieSessionManager(getApplicationContext());
-
-        // SQLite database handler
-        db = new SqliteHelper(getApplicationContext());
-/*
-        // Check if user is already logged in or not
-        if (session.isLoggedIn()) {
-            // User is already logged in. Take him to main activity
-            Intent intent = new Intent(Pverify.this,
-                    Callie.class);
-            startActivity(intent);
-            finish();
-        }
-*/
-        countryCode = ccp.getSelectedCountryCodeWithPlus();
-
-        // PregisterRequest Button Click event
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                String mobile = inputMobileEditText.getText().toString().trim();
-
-                if (!mobile.isEmpty()) {
-                    registerUser(mobile);
-                } else {
-                    Toast.makeText(getApplicationContext(),
-                            "Please enter mobile number!", Toast.LENGTH_LONG)
-                            .show();
-                }
-            }
-        });
-/*
-        // Link to Login Screen
-        btnLinkToLogin.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(),
-                        LoginActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
-*/
     }
 
     /**
@@ -101,13 +45,47 @@ public class Pregister extends Activity {
 
     }
 
-    private void showDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.activity_pregister, container, false);
+        initViews(view);
+        return view;
+        //return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    private void hideDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
+    private void initViews(View view) {
+
+        countryCode = ccp.getSelectedCountryCodeWithPlus();
+        pref = getActivity().getPreferences(0);
+        btnRegister = (Button) view.findViewById(R.id.btn_register);
+        inputMobileEditText = (EditText) view.findViewById(R.id.mobile);
+        ccp = (CountryCodePicker) view.findViewById(R.id.ccp);
+        btnRegister.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+            case R.id.btn_register:
+                String mobile = inputMobileEditText.getText().toString().trim();
+
+                if (!mobile.isEmpty()) {
+                    registerUser(mobile);
+                } else {
+                    Snackbar.make(getView(), "Please enter mobile number!", Snackbar.LENGTH_LONG).show();
+                }
+                break;
+
+        }
+    }
+
+    public Boolean sharedPrefSetter(Boolean status) {
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean(AccountConstants.IS_LOGGED_IN, status);
+        return null;
     }
 }

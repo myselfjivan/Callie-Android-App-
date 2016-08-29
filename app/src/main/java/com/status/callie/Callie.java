@@ -1,10 +1,12 @@
 package com.status.callie;
 
-import android.content.Intent;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.provider.SyncStateContract;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,8 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 import com.status.callie.Model.AccessToken;
 import com.status.callie.Model.SqliteHelper;
@@ -25,8 +25,10 @@ import com.status.callie.ui.Pregister;
 public class Callie extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     AccessToken accessToken = new AccessToken();
-    private Button reg;
+    public String TAG = "Callie.";
     SqliteHelper db;
+    private static Context context;
+    private SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,32 +36,8 @@ public class Callie extends AppCompatActivity
         setContentView(R.layout.activity_callie);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        reg = (Button) findViewById(R.id.reg);
         // SQLite database handler
         db = new SqliteHelper(getApplicationContext());
-        reg.setOnClickListener(new View.OnClickListener() {
-
-
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Intent i = new Intent(getApplicationContext(), Pregister.class);
-                startActivity(i);
-            }
-        });
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener()
-                               {
-                                   @Override
-                                   public void onClick(View view) {
-                                       Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                                               .setAction("Action", null).show();
-                                   }
-                               }
-
-        );
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -69,10 +47,9 @@ public class Callie extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        pref = getPreferences(0);
+        initFragment();
 
-        AccountConstants.aquiredAccessToken = accessToken.getToken();
-
-        Log.d("token saved", ""+AccountConstants.aquiredAccessToken);
     }
 
     @Override
@@ -130,6 +107,20 @@ public class Callie extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void initFragment() {
+        Fragment fragment;
+        if (pref.getBoolean(AccountConstants.IS_LOGGED_IN, false)) {
+            fragment = new Pregister();
+        } else {
+            fragment = new Pregister();
+            Log.d(TAG, "initFragment: No fragment yet, cheers!!!");
+            //fragment = new LoginFragment();
+        }
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_frame, fragment);
+        ft.commit();
     }
 
 }
