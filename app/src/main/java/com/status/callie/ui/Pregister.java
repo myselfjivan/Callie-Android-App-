@@ -3,7 +3,6 @@ package com.status.callie.ui;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,11 +40,8 @@ public class Pregister extends Activity {
 
         btnRegister = (Button) findViewById(R.id.btn_register);
         inputMobileEditText = (EditText) findViewById(R.id.mobile);
-        //countryCodeSpinner = (Spinner) findViewById(R.id.ccp);
-        //ccp = (CountryCodePicker) getView().findViewById(R.id.ccp);
         ccp = (CountryCodePicker) findViewById(R.id.ccp);
 
-        //countryCodeSpinner.setOnClickListener((View.OnClickListener) this);
 
         // Progress dialog
         pDialog = new ProgressDialog(this);
@@ -100,11 +96,8 @@ public class Pregister extends Activity {
      * Function to store user in MySQL database will post params(tag, name,
      * email, password) to register url
      */
-    private void registerUser(String mobile) {
-
-        if (register.Pregister(AccountConstants.aquiredAccessToken, countryCode, mobile) != null) {
-            Log.d(TAG, "registerUser: I am set");
-        }
+    private String registerUser(String mobile) {
+        return register.Pregister(AccountConstants.aquiredAccessToken, countryCode, mobile);
 
     }
 

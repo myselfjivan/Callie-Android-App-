@@ -6,6 +6,7 @@ import com.status.callie.Model.Request.PregisterRequest;
 import com.status.callie.Model.Response.PregisterResponse;
 import com.status.callie.services.ApiClient;
 import com.status.callie.services.ApiInterface;
+import com.status.callie.ui.Pregister;
 
 import java.io.IOException;
 
@@ -17,7 +18,8 @@ import retrofit2.Callback;
 public class Register {
     public String TAG = "Register Request";
     String message, status_code;
-
+    Pregister pregister;
+    // Gets the data repository in write mode
     public String Pregister(String accessToken, String country_code, String mobile) {
         PregisterRequest pregisterRequest = new PregisterRequest();
         pregisterRequest.setAccessToken(accessToken);
@@ -37,10 +39,9 @@ public class Register {
             @Override
             public void onResponse(retrofit2.Call<PregisterResponse> call, retrofit2.Response<PregisterResponse> response) {
                 PregisterResponse pregisterResponse = response.body();
-                //message = pregisterResponse.getMessage();
                 pregisterResponse.setMessage(pregisterResponse.getMessage());
                 pregisterResponse.setStatus_code(pregisterResponse.getStatus_code());
-                //status_code = pregisterResponse.getMessage();
+
             }
 
             @Override

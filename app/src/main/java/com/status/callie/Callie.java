@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.status.callie.Model.AccessToken;
+import com.status.callie.Model.SqliteHelper;
 import com.status.callie.accounts.AccountConstants;
 import com.status.callie.ui.Pregister;
 
@@ -25,6 +26,7 @@ public class Callie extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     AccessToken accessToken = new AccessToken();
     private Button reg;
+    SqliteHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,11 @@ public class Callie extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         reg = (Button) findViewById(R.id.reg);
+        // SQLite database handler
+        db = new SqliteHelper(getApplicationContext());
         reg.setOnClickListener(new View.OnClickListener() {
+
+
 
             @Override
             public void onClick(View v) {
