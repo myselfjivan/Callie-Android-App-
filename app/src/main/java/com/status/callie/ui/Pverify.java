@@ -1,186 +1,105 @@
 package com.status.callie.ui;
 
-/**
- * Created by jivan.ghadage on 8/5/2016.
- */
-
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Intent;
+import android.annotation.TargetApi;
+import android.app.Fragment;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.status.callie.Callie;
-import com.status.callie.CallieController;
-import com.status.callie.Model.SqliteHelper;
+import com.hbb20.CountryCodePicker;
+import com.status.callie.Model.Register;
 import com.status.callie.R;
 import com.status.callie.accounts.AccountConstants;
-import com.status.callie.services.CallieSessionManager;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+/**
+ * Created by jivan.ghadage on 8/11/2016.
+ */
+public class Pverify extends Fragment implements View.OnClickListener {
+    private static final String TAG = Pregister.class.getSimpleName();
+    private Button btnRegister;
+    private EditText inputMobileEditText;
+    Register register = new Register();
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class Pverify extends Activity {
-    private static final String TAG = Pverify.class.getSimpleName();
-    private Button btnLogin;
-    private EditText inpputOtp;
-    private ProgressDialog pDialog;
-    private CallieSessionManager session;
-    private SqliteHelper db;
+    public SharedPreferences pref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pverify);
-
-        inpputOtp = (EditText) findViewById(R.id.otp);
-        btnLogin = (Button) findViewById(R.id.btnverify);
-
-        // Progress dialog
-        pDialog = new ProgressDialog(this);
-        pDialog.setCancelable(false);
-
-        // SQLite database handler
-        db = new SqliteHelper(getApplicationContext());
-
-        // Session manager
-        session = new CallieSessionManager(getApplicationContext());
-
-        // Check if user is already logged in or not
-        if (session.isLoggedIn()) {
-            // User is already logged in. Take him to main activity
-            Intent intent = new Intent(Pverify.this, Callie.class);
-            startActivity(intent);
-            finish();
-        }
-
-        // Login button Click Event
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-                String otp = inpputOtp.getText().toString().trim();
-
-                // Check for empty data in the form
-                if (!otp.isEmpty()) {
-                    // login user
-                    checkLogin(otp);
-                } else {
-                    // Prompt user to enter credentials
-                    Toast.makeText(getApplicationContext(),
-                            "Please enter the credentials!", Toast.LENGTH_LONG)
-                            .show();
-                }
-            }
-
-        });
-/*
-        // Link to PregisterRequest Screen
-        btnLinkToRegister.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(),
-                        RegisterActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
-*/
-
     }
 
     /**
-     * function to verify login details in mysql db
+     * Function to store user in MySQL database will post params(tag, name,
+     * email, password) to register url
      */
-    private void checkLogin(final String otp) {
-        // Tag used to cancel the request
-        String tag_string_req = "req_login";
+    private String registerUser(String mobile) {
+        return register.Pregister(AccountConstants.aquiredAccessToken, countryCode, mobile);
 
-        pDialog.setMessage("Logging in ...");
-        showDialog();
-
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                AccountConstants.APP_NOTE_URL + "oauth/request/", new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "Login Response: " + response.toString());
-                hideDialog();
-
-                try {
-                    JSONObject jObj = new JSONObject(response);
-                    boolean error = jObj.getBoolean("error");
-
-                    // Check for error node in json
-                    if (!error) {
-                        // user successfully logged in
-                        // Create login session
-                        session.setLogin(true);
-
-                        // Now store the user in SQLite
-                        String uid = jObj.getString("uid");
+    }
 
 
-                        // Launch main activity
-                        Intent intent = new Intent(Pverify.this,
-                                Callie.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        // Error in login. Get the error message
-                        String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_pverify, container, false);
+        initViews(view);
+        return view;
+        //return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    private void initViews(View view) {
+        btnRegister = (Button) view.findViewById(R.id.btn_register);
+        inputMobileEditText = (EditText) view.findViewById(R.id.mobile);
+        btnRegister.setOnClickListener(this);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        pref = getActivity().getPreferences(0);
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+            case R.id.btn_register:
+                String mobile = inputMobileEditText.getText().toString().trim();
+
+                if (!mobile.isEmpty()) {
+                    registerUser(mobile);
+                } else {
+                    Snackbar.make(getView(), "Please enter mobile number!", Snackbar.LENGTH_LONG).show();
                 }
-
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Login Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
-                hideDialog();
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() {
-                // Posting parameters to login url
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("otp", otp);
-
-                return params;
-            }
-
-        };
-
-        // Adding request to request queue
-        CallieController.getInstance().addToRequestQueue(strReq, tag_string_req);
+                break;
+        }
     }
 
-    private void showDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
+    @TargetApi(Build.VERSION_CODES.M)
+    public Boolean sharedPrefSetter(Boolean status) {
+        if (status == true) {
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putBoolean(AccountConstants.IS_LOGGED_IN, status);
+            editor.apply();
+            editor.commit();
+        }
+        return null;
     }
+/*
+    private void goToProfile(){
 
-    private void hideDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
+        Fragment profile = new ProfileFragment();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_frame,profile);
+        ft.commit();
     }
+*/
 }
-

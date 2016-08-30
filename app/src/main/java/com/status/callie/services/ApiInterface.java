@@ -21,4 +21,7 @@ public interface ApiInterface {
 
     @POST("auth/pregister")
     Call<PregisterResponse> authPregister(@Body PregisterRequest pregisterRequest);
+
+    @POST("auth/pverify")
+    Call<>
 }
