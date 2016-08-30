@@ -1,10 +1,15 @@
 package com.status.callie.ui;
 
+import android.annotation.TargetApi;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,13 +32,12 @@ public class Pregister extends Fragment implements View.OnClickListener {
     Register register = new Register();
     CountryCodePicker ccp;
 
-    private SharedPreferences pref;
+    public SharedPreferences pref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-
-
     }
 
     /**
@@ -49,21 +53,24 @@ public class Pregister extends Fragment implements View.OnClickListener {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.activity_pregister, container, false);
         initViews(view);
+        countryCode = ccp.getSelectedCountryCodeWithPlus();
         return view;
         //return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     private void initViews(View view) {
-
-        countryCode = ccp.getSelectedCountryCodeWithPlus();
-        pref = getActivity().getPreferences(0);
         btnRegister = (Button) view.findViewById(R.id.btn_register);
         inputMobileEditText = (EditText) view.findViewById(R.id.mobile);
         ccp = (CountryCodePicker) view.findViewById(R.id.ccp);
         btnRegister.setOnClickListener(this);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        pref = getActivity().getPreferences(0);
+        super.onAttach(context);
     }
 
     @Override
@@ -79,13 +86,26 @@ public class Pregister extends Fragment implements View.OnClickListener {
                     Snackbar.make(getView(), "Please enter mobile number!", Snackbar.LENGTH_LONG).show();
                 }
                 break;
-
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     public Boolean sharedPrefSetter(Boolean status) {
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean(AccountConstants.IS_LOGGED_IN, status);
+        if (status == true) {
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putBoolean(AccountConstants.IS_LOGGED_IN, status);
+            editor.apply();
+            editor.commit();
+        }
         return null;
     }
+/*
+    private void goToProfile(){
+
+        Fragment profile = new ProfileFragment();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_frame,profile);
+        ft.commit();
+    }
+*/
 }

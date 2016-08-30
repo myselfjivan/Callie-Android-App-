@@ -36,9 +36,10 @@ public class Callie extends AppCompatActivity
         setContentView(R.layout.activity_callie);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        pref = getPreferences(0);
+        accessToken.getToken();
         // SQLite database handler
         db = new SqliteHelper(getApplicationContext());
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -47,7 +48,7 @@ public class Callie extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        pref = getPreferences(0);
+
         initFragment();
 
     }

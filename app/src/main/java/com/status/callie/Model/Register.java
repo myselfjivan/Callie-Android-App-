@@ -29,11 +29,12 @@ import retrofit2.Callback;
 public class Register {
     public String TAG = "Register Request";
     String status_code;
-    private Pregister pregister;
+    Pregister pregister;
     private SharedPreferences pref;
 
     // Gets the data repository in write mode
     public String Pregister(String accessToken, String country_code, String mobile) {
+        pregister = new Pregister();
         PregisterRequest pregisterRequest = new PregisterRequest();
         pregisterRequest.setAccessToken(accessToken);
         pregisterRequest.setCountry_code(country_code);
@@ -56,10 +57,10 @@ public class Register {
                     Log.d(TAG, "onResponse: " + pregisterResponse.getMessage());
                     pregisterResponse.setMessage(pregisterResponse.getMessage());
                     pregisterResponse.setStatus_code(pregisterResponse.getStatus_code());
-                    pregister.sharedPrefSetter(true);
+                    //pregister.sharedPrefSetter(true);
                 } else {
                     // parse the response body …
-                    ApiError error = null;
+                    ApiError error;
                     try {
                         pregister.sharedPrefSetter(false);
                         error = ErrorUtils.parseError(response);
