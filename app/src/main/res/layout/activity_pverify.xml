@@ -22,7 +22,7 @@
             android:layout_marginBottom="10dp"
             android:background="@color/white"
             android:hint="OTP"
-            android:inputType="textEmailAddress"
+            android:inputType="text"
             android:padding="10dp"
             android:singleLine="true"
             android:textColor="@color/input_login"
@@ -31,7 +31,7 @@
         <!-- Login Button -->
 
         <Button
-            android:id="@+id/btnverify"
+            android:id="@+id/btn_verify"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"

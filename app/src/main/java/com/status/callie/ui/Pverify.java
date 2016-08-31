@@ -2,6 +2,7 @@ package com.status.callie.ui;
 
 import android.annotation.TargetApi;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -16,7 +17,9 @@ import android.widget.EditText;
 
 import com.hbb20.CountryCodePicker;
 import com.status.callie.Model.Register;
+import com.status.callie.Model.Verify;
 import com.status.callie.R;
+import com.status.callie.System.GetMacAddress;
 import com.status.callie.accounts.AccountConstants;
 
 /**
@@ -24,9 +27,12 @@ import com.status.callie.accounts.AccountConstants;
  */
 public class Pverify extends Fragment implements View.OnClickListener {
     private static final String TAG = Pregister.class.getSimpleName();
-    private Button btnRegister;
-    private EditText inputMobileEditText;
-    Register register = new Register();
+    private Button btnVerify;
+    private EditText inputOtp;
+    private String macAddress;
+    Verify pverify = new Verify();
+    GetMacAddress getMacAddress = new GetMacAddress();
+
 
     public SharedPreferences pref;
 
@@ -34,14 +40,15 @@ public class Pverify extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        macAddress = getMacAddress.getMacAddr();
     }
 
     /**
      * Function to store user in MySQL database will post params(tag, name,
      * email, password) to register url
      */
-    private String registerUser(String mobile) {
-        return register.Pregister(AccountConstants.aquiredAccessToken, countryCode, mobile);
+    private String verifyUser(String otp, String mac) {
+        return pverify.Pverify(AccountConstants.aquiredAccessToken, pref.getString("country_code", ""), pref.getString("mobile", ""), otp, mac);
 
     }
 
@@ -56,9 +63,9 @@ public class Pverify extends Fragment implements View.OnClickListener {
     }
 
     private void initViews(View view) {
-        btnRegister = (Button) view.findViewById(R.id.btn_register);
-        inputMobileEditText = (EditText) view.findViewById(R.id.mobile);
-        btnRegister.setOnClickListener(this);
+        btnVerify = (Button) view.findViewById(R.id.btn_verify);
+        inputOtp = (EditText) view.findViewById(R.id.otp);
+        btnVerify.setOnClickListener(this);
     }
 
     @Override
@@ -70,12 +77,10 @@ public class Pverify extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
-            case R.id.btn_register:
-                String mobile = inputMobileEditText.getText().toString().trim();
-
-                if (!mobile.isEmpty()) {
-                    registerUser(mobile);
+            case R.id.btn_verify:
+                String otp = inputOtp.getText().toString().trim();
+                if (!otp.isEmpty()) {
+                    verifyUser(otp, macAddress);
                 } else {
                     Snackbar.make(getView(), "Please enter mobile number!", Snackbar.LENGTH_LONG).show();
                 }
@@ -96,7 +101,7 @@ public class Pverify extends Fragment implements View.OnClickListener {
 /*
     private void goToProfile(){
 
-        Fragment profile = new ProfileFragment();
+        Fragment profile = new Pverify();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_frame,profile);
         ft.commit();

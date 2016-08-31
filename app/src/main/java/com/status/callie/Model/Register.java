@@ -12,6 +12,7 @@ import com.status.callie.Callie;
 import com.status.callie.Model.Request.PregisterRequest;
 import com.status.callie.Model.Response.PregisterResponse;
 import com.status.callie.R;
+import com.status.callie.accounts.AccountConstants;
 import com.status.callie.services.ApiClient;
 import com.status.callie.services.ApiError;
 import com.status.callie.services.ApiInterface;
@@ -33,7 +34,7 @@ public class Register {
     private SharedPreferences pref;
 
     // Gets the data repository in write mode
-    public String Pregister(String accessToken, String country_code, String mobile) {
+    public String Pregister(String accessToken, final String country_code, final String mobile) {
         pregister = new Pregister();
         PregisterRequest pregisterRequest = new PregisterRequest();
         pregisterRequest.setAccessToken(accessToken);
@@ -55,14 +56,17 @@ public class Register {
                 if (response.isSuccessful()) {
                     PregisterResponse pregisterResponse = response.body();
                     Log.d(TAG, "onResponse: " + pregisterResponse.getMessage());
-                    pregisterResponse.setMessage(pregisterResponse.getMessage());
-                    pregisterResponse.setStatus_code(pregisterResponse.getStatus_code());
-                    //pregister.sharedPrefSetter(true);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putBoolean(AccountConstants.IS_LOGGED_IN, true);
+                    editor.putString("country_code", country_code);
+                    editor.putString("mobile", mobile);
+                    editor.commit();
+                    //pregister.sharedPrefSetter(true, country_code, mobile);
+                    //pregister.goToOtpVerification();
                 } else {
                     // parse the response body …
                     ApiError error;
                     try {
-                        pregister.sharedPrefSetter(false);
                         error = ErrorUtils.parseError(response);
                         Log.d("error message", error.message());
                     } catch (IOException e) {

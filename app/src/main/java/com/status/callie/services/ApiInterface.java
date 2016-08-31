@@ -5,8 +5,10 @@ package com.status.callie.services;
  */
 
 import com.status.callie.Model.Request.PregisterRequest;
+import com.status.callie.Model.Request.PverifyRequest;
 import com.status.callie.Model.Request.TokenRequest;
 import com.status.callie.Model.Response.PregisterResponse;
+import com.status.callie.Model.Response.PverifyResponse;
 import com.status.callie.Model.Response.TokenResponse;
 
 import retrofit2.Call;
@@ -23,5 +25,5 @@ public interface ApiInterface {
     Call<PregisterResponse> authPregister(@Body PregisterRequest pregisterRequest);
 
     @POST("auth/pverify")
-    Call<>
+    Call<PverifyResponse> authPverify(@Body PverifyRequest pverifyRequest);
 }

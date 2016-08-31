@@ -1,7 +1,9 @@
 package com.status.callie.ui;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +34,7 @@ public class Pregister extends Fragment implements View.OnClickListener {
     private String countryCode;
     Register register = new Register();
     CountryCodePicker ccp;
-
-    public SharedPreferences pref;
+    private SharedPreferences pref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,7 @@ public class Pregister extends Fragment implements View.OnClickListener {
     }
 
     private void initViews(View view) {
+        pref = getActivity().getPreferences(0);
         btnRegister = (Button) view.findViewById(R.id.btn_register);
         inputMobileEditText = (EditText) view.findViewById(R.id.mobile);
         ccp = (CountryCodePicker) view.findViewById(R.id.ccp);
@@ -69,7 +72,7 @@ public class Pregister extends Fragment implements View.OnClickListener {
 
     @Override
     public void onAttach(Context context) {
-        pref = getActivity().getPreferences(0);
+        pref = this.getActivity().getSharedPreferences("com.status.callie", Context.MODE_PRIVATE);
         super.onAttach(context);
     }
 
@@ -82,6 +85,7 @@ public class Pregister extends Fragment implements View.OnClickListener {
 
                 if (!mobile.isEmpty()) {
                     registerUser(mobile);
+                    goToOtpVerification();
                 } else {
                     Snackbar.make(getView(), "Please enter mobile number!", Snackbar.LENGTH_LONG).show();
                 }
@@ -89,23 +93,24 @@ public class Pregister extends Fragment implements View.OnClickListener {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
-    public Boolean sharedPrefSetter(Boolean status) {
+    public String sharedPrefSetter(Boolean status, String countryCode, String mobile) {
         if (status == true) {
+            Log.d(TAG, "sharedPrefSetter: I am not getting called");
             SharedPreferences.Editor editor = pref.edit();
             editor.putBoolean(AccountConstants.IS_LOGGED_IN, status);
-            editor.apply();
+            editor.putString("country_code", countryCode);
+            editor.putString("mobile", mobile);
             editor.commit();
+            goToOtpVerification();
         }
         return null;
     }
-/*
-    private void goToProfile(){
 
-        Fragment profile = new ProfileFragment();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_frame,profile);
+    public void goToOtpVerification() {
+        Fragment verify = new Pverify();
+        FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_frame, verify);
         ft.commit();
     }
-*/
+
 }
