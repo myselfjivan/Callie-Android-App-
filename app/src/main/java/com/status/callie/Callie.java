@@ -3,6 +3,7 @@ package com.status.callie;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.SyncStateContract;
@@ -21,6 +22,8 @@ import com.status.callie.Model.SqliteHelper;
 import com.status.callie.accounts.AccountConstants;
 import com.status.callie.ui.Pregister;
 import com.status.callie.ui.Pverify;
+import com.status.callie.ui.RegisterActivity;
+import com.status.callie.ui.VerifyActivity;
 
 
 public class Callie extends AppCompatActivity
@@ -113,17 +116,16 @@ public class Callie extends AppCompatActivity
     }
 
     private void initFragment() {
-        Fragment fragment;
+
+
+        //Fragment fragment;
         if (pref.getBoolean(AccountConstants.IS_LOGGED_IN, false)) {
-            fragment = new Pregister();
+            Intent intent = new Intent(Callie.this, VerifyActivity.class);
+            startActivity(intent);
         } else {
-            fragment = new Pregister();
-            Log.d(TAG, "initFragment: No fragment yet, cheers!!!");
-            //fragment = new LoginFragment();
+            Intent intent = new Intent(Callie.this, RegisterActivity.class);
+            startActivity(intent);
         }
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_frame, fragment);
-        ft.commit();
     }
 
 }

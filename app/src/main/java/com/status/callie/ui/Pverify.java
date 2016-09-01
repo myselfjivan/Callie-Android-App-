@@ -76,6 +76,7 @@ public class Pverify extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+
         switch (v.getId()) {
             case R.id.btn_verify:
                 String otp = inputOtp.getText().toString().trim();

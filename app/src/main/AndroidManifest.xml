@@ -20,6 +20,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.RegisterActivity">
+
+        </activity>
+        <activity android:name=".ui.VerifyActivity">
+
+        </activity>
     </application>
 
 </manifest>

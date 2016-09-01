@@ -19,6 +19,7 @@ import com.status.callie.services.ApiInterface;
 import com.status.callie.services.ErrorUtils;
 import com.status.callie.ui.Pregister;
 import com.status.callie.ui.Pverify;
+import com.status.callie.ui.RegisterActivity;
 
 import java.io.IOException;
 
@@ -31,6 +32,7 @@ public class Register {
     public String TAG = "Register Request";
     String status_code;
     Pregister pregister;
+    RegisterActivity registerActivity = new RegisterActivity();
 
     // Gets the data repository in write mode
     public String Pregister(String accessToken, final String country_code, final String mobile) {
@@ -55,6 +57,7 @@ public class Register {
                 if (response.isSuccessful()) {
                     PregisterResponse pregisterResponse = response.body();
                     Log.d(TAG, "onResponse: " + pregisterResponse.getMessage());
+                    //registerActivity.sharedPrefSetter(Callie.this, true, country_code, mobile);
                 } else {
                     // parse the response body …
                     ApiError error;
