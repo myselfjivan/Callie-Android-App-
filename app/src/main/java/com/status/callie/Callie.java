@@ -20,6 +20,7 @@ import com.status.callie.Model.AccessToken;
 import com.status.callie.Model.SqliteHelper;
 import com.status.callie.accounts.AccountConstants;
 import com.status.callie.ui.Pregister;
+import com.status.callie.ui.Pverify;
 
 
 public class Callie extends AppCompatActivity
@@ -37,6 +38,7 @@ public class Callie extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         pref = getPreferences(0);
+        pref = Callie.this.getSharedPreferences("com.callie.status", Context.MODE_PRIVATE);
         accessToken.getToken();
         // SQLite database handler
         db = new SqliteHelper(getApplicationContext());

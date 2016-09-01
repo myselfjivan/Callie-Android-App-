@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.hbb20.CountryCodePicker;
+import com.status.callie.Callie;
 import com.status.callie.Model.Register;
 import com.status.callie.R;
 import com.status.callie.accounts.AccountConstants;
@@ -58,6 +59,7 @@ public class Pregister extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.activity_pregister, container, false);
         initViews(view);
         countryCode = ccp.getSelectedCountryCodeWithPlus();
+        AccountConstants.country_code = countryCode;
         return view;
         //return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -82,6 +84,7 @@ public class Pregister extends Fragment implements View.OnClickListener {
 
             case R.id.btn_register:
                 String mobile = inputMobileEditText.getText().toString().trim();
+                AccountConstants.mobile = mobile;
 
                 if (!mobile.isEmpty()) {
                     registerUser(mobile);

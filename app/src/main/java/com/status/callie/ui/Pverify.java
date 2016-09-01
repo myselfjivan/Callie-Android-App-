@@ -48,7 +48,7 @@ public class Pverify extends Fragment implements View.OnClickListener {
      * email, password) to register url
      */
     private String verifyUser(String otp, String mac) {
-        return pverify.Pverify(AccountConstants.aquiredAccessToken, pref.getString("country_code", ""), pref.getString("mobile", ""), otp, mac);
+        return pverify.Pverify(AccountConstants.aquiredAccessToken, AccountConstants.country_code, AccountConstants.mobile, otp, mac);
 
     }
 

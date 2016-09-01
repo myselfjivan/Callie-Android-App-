@@ -31,7 +31,6 @@ public class Register {
     public String TAG = "Register Request";
     String status_code;
     Pregister pregister;
-    private SharedPreferences pref;
 
     // Gets the data repository in write mode
     public String Pregister(String accessToken, final String country_code, final String mobile) {
@@ -56,13 +55,6 @@ public class Register {
                 if (response.isSuccessful()) {
                     PregisterResponse pregisterResponse = response.body();
                     Log.d(TAG, "onResponse: " + pregisterResponse.getMessage());
-                    SharedPreferences.Editor editor = pref.edit();
-                    editor.putBoolean(AccountConstants.IS_LOGGED_IN, true);
-                    editor.putString("country_code", country_code);
-                    editor.putString("mobile", mobile);
-                    editor.commit();
-                    //pregister.sharedPrefSetter(true, country_code, mobile);
-                    //pregister.goToOtpVerification();
                 } else {
                     // parse the response body …
                     ApiError error;

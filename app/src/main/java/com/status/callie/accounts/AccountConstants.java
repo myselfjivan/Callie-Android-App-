@@ -15,4 +15,7 @@ public class AccountConstants {
     public static final String SUCCESS = "success";
     public static final String FAILURE = "failure";
     public static final String IS_LOGGED_IN = "isLoggedIn";
+    public static String mobile;
+    public static String country_code;
+    public static String otp;
 }
