@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.status.callie.Model.AccessToken;
+import com.status.callie.Model.Register;
 import com.status.callie.Model.SqliteHelper;
 import com.status.callie.accounts.AccountConstants;
 import com.status.callie.ui.Pregister;
@@ -116,14 +117,12 @@ public class Callie extends AppCompatActivity
     }
 
     private void initFragment() {
-
-
         //Fragment fragment;
-        if (pref.getBoolean(AccountConstants.IS_LOGGED_IN, false)) {
-            Intent intent = new Intent(Callie.this, VerifyActivity.class);
+        if (pref.getBoolean(AccountConstants.IS_LOGGED_IN, true) && pref.getBoolean(AccountConstants.IS_VERIFIED, true)) {
+            Intent intent = new Intent(Callie.this, RegisterActivity.class);
             startActivity(intent);
         } else {
-            Intent intent = new Intent(Callie.this, RegisterActivity.class);
+            Intent intent = new Intent(Callie.this, Home.class);
             startActivity(intent);
         }
     }

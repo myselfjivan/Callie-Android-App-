@@ -89,6 +89,7 @@ public class RegisterActivity extends Activity {
             pref = context.getSharedPreferences("com.callie.status", Context.MODE_PRIVATE);
             editor = pref.edit();
             editor.putBoolean(AccountConstants.IS_LOGGED_IN, status);
+
             editor.putString("country_code", countryCode);
             editor.putString("mobile", mobile);
             editor.commit();

@@ -34,7 +34,6 @@ public class VerifyActivity extends Activity {
     private Button btnVerify;
     private EditText inputOtp;
     private String macAddress;
-    Verify pverify = new Verify();
     GetMacAddress getMacAddress;
     private SharedPreferences pref;
     SharedPreferences.Editor editor;
@@ -105,6 +104,7 @@ public class VerifyActivity extends Activity {
                     pverifyResponse.setMessage(pverifyResponse.getMessage());
                     pverifyResponse.setStatus_code(pverifyResponse.getStatus_code());
                     //pregister.sharedPrefSetter(true);
+                    sharedPrefSetter(VerifyActivity.this);
                 } else {
                     // parse the response body …
                     ApiError error;
@@ -126,6 +126,15 @@ public class VerifyActivity extends Activity {
         });
 
         return status_code;
+    }
+
+    public String sharedPrefSetter(Context context) {
+        Log.d(TAG, "sharedPrefSetter: I am not getting called");
+        pref = context.getSharedPreferences("com.callie.status", Context.MODE_PRIVATE);
+        editor = pref.edit();
+        editor.putBoolean(AccountConstants.IS_VERIFIED, true);
+        editor.commit();
+        return null;
     }
 
 }
