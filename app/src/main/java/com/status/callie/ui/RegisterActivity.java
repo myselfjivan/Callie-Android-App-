@@ -1,8 +1,6 @@
 package com.status.callie.ui;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,7 +12,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.hbb20.CountryCodePicker;
-import com.status.callie.Callie;
 import com.status.callie.Model.Register;
 import com.status.callie.Model.Request.PregisterRequest;
 import com.status.callie.Model.Response.PregisterResponse;
@@ -88,8 +85,7 @@ public class RegisterActivity extends Activity {
             Log.d(TAG, "sharedPrefSetter: I am not getting called");
             pref = context.getSharedPreferences("com.callie.status", Context.MODE_PRIVATE);
             editor = pref.edit();
-            editor.putBoolean(AccountConstants.IS_LOGGED_IN, status);
-
+            editor.putString(AccountConstants.IS_LOGGED_IN, "true");
             editor.putString("country_code", countryCode);
             editor.putString("mobile", mobile);
             editor.commit();

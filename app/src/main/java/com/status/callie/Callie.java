@@ -1,30 +1,22 @@
 package com.status.callie;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.SyncStateContract;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.status.callie.Model.AccessToken;
-import com.status.callie.Model.Register;
 import com.status.callie.Model.SqliteHelper;
 import com.status.callie.accounts.AccountConstants;
-import com.status.callie.ui.Pregister;
-import com.status.callie.ui.Pverify;
 import com.status.callie.ui.RegisterActivity;
-import com.status.callie.ui.VerifyActivity;
 
 
 public class Callie extends AppCompatActivity
@@ -118,7 +110,7 @@ public class Callie extends AppCompatActivity
 
     private void initFragment() {
         //Fragment fragment;
-        if (pref.getBoolean(AccountConstants.IS_LOGGED_IN, true) && pref.getBoolean(AccountConstants.IS_VERIFIED, true)) {
+        if ((pref.getString(AccountConstants.IS_LOGGED_IN, "") != "true" && pref.getString(AccountConstants.IS_VERIFIED,"") != "true")) {
             Intent intent = new Intent(Callie.this, RegisterActivity.class);
             startActivity(intent);
         } else {

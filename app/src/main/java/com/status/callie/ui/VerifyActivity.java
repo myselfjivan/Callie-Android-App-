@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.status.callie.Model.Request.PverifyRequest;
 import com.status.callie.Model.Response.PverifyResponse;
-import com.status.callie.Model.Verify;
 import com.status.callie.R;
 import com.status.callie.System.GetMacAddress;
 import com.status.callie.accounts.AccountConstants;
@@ -132,7 +131,7 @@ public class VerifyActivity extends Activity {
         Log.d(TAG, "sharedPrefSetter: I am not getting called");
         pref = context.getSharedPreferences("com.callie.status", Context.MODE_PRIVATE);
         editor = pref.edit();
-        editor.putBoolean(AccountConstants.IS_VERIFIED, true);
+        editor.putString(AccountConstants.IS_VERIFIED, "true");
         editor.commit();
         return null;
     }

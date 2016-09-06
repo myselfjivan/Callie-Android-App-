@@ -1,17 +1,12 @@
 package com.status.callie.ui;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.hbb20.CountryCodePicker;
-import com.status.callie.Callie;
 import com.status.callie.Model.Register;
 import com.status.callie.R;
 import com.status.callie.accounts.AccountConstants;
