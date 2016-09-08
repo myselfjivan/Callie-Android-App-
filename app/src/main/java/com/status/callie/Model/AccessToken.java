@@ -19,10 +19,12 @@ import retrofit2.Callback;
 public class AccessToken {
     public String TAG = "Token Genration";
     String accessTokne;
+    String token_status;
+    String refresh_token;
 
     public String getToken() {
         TokenRequest tokenRequest = new TokenRequest();
-        tokenRequest.setGrant_type(AccountConstants.GRANT_TYPE);
+        tokenRequest.setGrant_type(AccountConstants.GRANT_TYPE_PASSWORD);
         tokenRequest.setClient_id(AccountConstants.CLIENT_ID);
         tokenRequest.setClient_secret(AccountConstants.CLIENT_SECRET);
         tokenRequest.setUsername(AccountConstants.USERNAME);
@@ -51,6 +53,41 @@ public class AccessToken {
             }
         });
         return accessTokne;
+    }
+
+    public String checkToken() {
+        return token_status;
+    }
+
+    public String getRefreshToken(String refresh_token) {
+        TokenRequest tokenRequest = new TokenRequest();
+        tokenRequest.setGrant_type(AccountConstants.GRANT_TYPE_REFRESH_TOKEN);
+        tokenRequest.setClient_id(AccountConstants.CLIENT_ID);
+        tokenRequest.setClient_secret(AccountConstants.CLIENT_SECRET);
+
+        ApiInterface apiService = null;
+        try {
+            apiService = ApiClient.getClient().create(ApiInterface.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        Call<TokenResponse> call = apiService.oauthRequest(tokenRequest);
+        call.enqueue(new Callback<TokenResponse>() {
+            @Override
+            public void onResponse(Call<TokenResponse> call, retrofit2.Response<TokenResponse> response) {
+                TokenResponse tokenResponse = response.body();
+                accessTokne = tokenResponse.getAccessToken();
+                AccountConstants.aquiredAccessToken = accessTokne;
+            }
+
+            @Override
+            public void onFailure(Call<TokenResponse> call, Throwable t) {
+                Log.e("on failure", t.toString());
+            }
+        });
+        return refresh_token;
     }
 
 }

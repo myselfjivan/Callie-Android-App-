@@ -110,7 +110,8 @@ public class Callie extends AppCompatActivity
 
     private void initFragment() {
         //Fragment fragment;
-        if ((pref.getString(AccountConstants.IS_LOGGED_IN, "") != "true" && pref.getString(AccountConstants.IS_VERIFIED,"") != "true")) {
+        if ((pref.getString(AccountConstants.IS_LOGGED_IN, "") == "false" && pref.getString(AccountConstants.IS_VERIFIED,"") == "false") &&
+                (pref.getString(AccountConstants.IS_LOGGED_IN, "") == "" && pref.getString(AccountConstants.IS_VERIFIED,"") == "") ) {
             Intent intent = new Intent(Callie.this, RegisterActivity.class);
             startActivity(intent);
         } else {
