@@ -44,9 +44,18 @@ public class TokenRequest {
         this.password = password;
     }
 
+    public String getRefresh_token() {
+        return refresh_token;
+    }
+
+    public void setRefresh_token(String refresh_token) {
+        this.refresh_token = refresh_token;
+    }
+
     private String grant_type;
     private String client_id;
     private String client_secret;
     private String username;
     private String password;
+    private String refresh_token;
 }

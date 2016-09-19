@@ -1,24 +1,13 @@
 package com.status.callie.Model;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
 
-import com.status.callie.Callie;
 import com.status.callie.Model.Request.PregisterRequest;
 import com.status.callie.Model.Response.PregisterResponse;
-import com.status.callie.R;
-import com.status.callie.accounts.AccountConstants;
 import com.status.callie.services.ApiClient;
 import com.status.callie.services.ApiError;
 import com.status.callie.services.ApiInterface;
 import com.status.callie.services.ErrorUtils;
-import com.status.callie.ui.Pregister;
-import com.status.callie.ui.Pverify;
 import com.status.callie.ui.RegisterActivity;
 
 import java.io.IOException;

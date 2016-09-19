@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.status.callie.services.ConnectivityCheck;
 
 /**
  * Created by jivan.ghadage on 8/8/2016.
@@ -49,5 +50,9 @@ public class CallieController extends Application {
         if (mRequestQueue != null) {
             mRequestQueue.cancelAll(tag);
         }
+    }
+
+    public void setConnectivityListener(ConnectivityCheck.ConnectivityReceiverListener listener) {
+        ConnectivityCheck.connectivityReceiverListener = listener;
     }
 }

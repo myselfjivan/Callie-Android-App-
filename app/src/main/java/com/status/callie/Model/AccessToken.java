@@ -59,11 +59,12 @@ public class AccessToken {
         return token_status;
     }
 
-    public String getRefreshToken(String refresh_token) {
+    public String getRefreshToken(String old_refresh_token) {
         TokenRequest tokenRequest = new TokenRequest();
         tokenRequest.setGrant_type(AccountConstants.GRANT_TYPE_REFRESH_TOKEN);
         tokenRequest.setClient_id(AccountConstants.CLIENT_ID);
         tokenRequest.setClient_secret(AccountConstants.CLIENT_SECRET);
+        tokenRequest.setRefresh_token(old_refresh_token);
 
         ApiInterface apiService = null;
         try {
@@ -73,7 +74,7 @@ public class AccessToken {
         }
 
 
-        Call<TokenResponse> call = apiService.oauthRequest(tokenRequest);
+        Call<TokenResponse> call = apiService.oauthReRequest(tokenRequest);
         call.enqueue(new Callback<TokenResponse>() {
             @Override
             public void onResponse(Call<TokenResponse> call, retrofit2.Response<TokenResponse> response) {

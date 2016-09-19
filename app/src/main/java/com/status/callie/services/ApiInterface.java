@@ -21,6 +21,9 @@ public interface ApiInterface {
     @POST("oauth/request")
     Call<TokenResponse> oauthRequest(@Body TokenRequest tokenRequest);
 
+    @POST("oauth/rerequest")
+    Call<TokenResponse> oauthReRequest(@Body TokenRequest tokenRequest);
+
     @POST("auth/pregister")
     Call<PregisterResponse> authPregister(@Body PregisterRequest pregisterRequest);
 

@@ -31,7 +31,7 @@ import retrofit2.Callback;
  */
 public class RegisterActivity extends Activity {
 
-    private static final String TAG = Pregister.class.getSimpleName();
+    private static final String TAG = RegisterActivity.class.getSimpleName();
     private Button btnRegister;
     private EditText inputMobileEditText;
     private String countryCode;

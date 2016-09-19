@@ -29,7 +29,7 @@ import retrofit2.Callback;
  */
 public class VerifyActivity extends Activity {
 
-    private static final String TAG = Pregister.class.getSimpleName();
+    private static final String TAG = VerifyActivity.class.getSimpleName();
     private Button btnVerify;
     private EditText inputOtp;
     private String macAddress;

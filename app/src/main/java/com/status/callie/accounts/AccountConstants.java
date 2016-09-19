@@ -12,6 +12,8 @@ public class AccountConstants {
     public static String USERNAME = "uNt^#xc74N0^&mx.^";
     public static String PASSWORD = "1<.bm$*nchdN4C&5";
     public static String aquiredAccessToken;
+    public static String token;
+    public static String refresh_token;
 
     public static final String SUCCESS = "success";
     public static final String FAILURE = "failure";
