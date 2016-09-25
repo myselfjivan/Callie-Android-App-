@@ -21,10 +21,9 @@ import com.status.callie.ui.RegisterActivity;
 
 public class Callie extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    AccessToken accessToken = new AccessToken();
-    public String TAG = "Callie.";
+    AccessToken accessToken = new AccessToken(Callie.this);
+    public String TAG = "Callie";
     SqliteHelper db;
-    private static Context context;
     private SharedPreferences pref;
 
     @Override
@@ -34,7 +33,7 @@ public class Callie extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         pref = getPreferences(0);
-        pref = Callie.this.getSharedPreferences("com.callie.status", Context.MODE_PRIVATE);
+        pref = Callie.this.getSharedPreferences(AccountConstants.SHARED_PREF_OTP, Context.MODE_PRIVATE);
         accessToken.getToken();
         // SQLite database handler
         db = new SqliteHelper(getApplicationContext());
@@ -110,8 +109,7 @@ public class Callie extends AppCompatActivity
 
     private void initFragment() {
         //Fragment fragment;
-        if ((pref.getString(AccountConstants.IS_LOGGED_IN, "") == "false" && pref.getString(AccountConstants.IS_VERIFIED,"") == "false") &&
-                (pref.getString(AccountConstants.IS_LOGGED_IN, "") == "" && pref.getString(AccountConstants.IS_VERIFIED,"") == "") ) {
+        if ((pref.getString(AccountConstants.IS_LOGGED_IN, "") != "true" && pref.getString(AccountConstants.IS_VERIFIED, "") != "true")) {
             Intent intent = new Intent(Callie.this, RegisterActivity.class);
             startActivity(intent);
         } else {

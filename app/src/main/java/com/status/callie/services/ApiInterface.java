@@ -12,7 +12,6 @@ import com.status.callie.Model.Response.PverifyResponse;
 import com.status.callie.Model.Response.TokenResponse;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 

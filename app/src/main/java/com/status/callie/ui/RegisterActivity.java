@@ -37,7 +37,8 @@ public class RegisterActivity extends Activity {
     private String countryCode;
     Register register;
     CountryCodePicker ccp;
-    private SharedPreferences pref;
+    private SharedPreferences shared_pref_otp;
+    private SharedPreferences shared_pref_oauth2;
     SharedPreferences.Editor editor;
     String status_code;
 
@@ -46,7 +47,8 @@ public class RegisterActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pregister);
         register = new Register();
-        pref = getPreferences(0);
+        shared_pref_otp = getPreferences(0);
+        shared_pref_oauth2 = getPreferences(0);
 
 
         btnRegister = (Button) findViewById(R.id.btn_register);
@@ -61,7 +63,7 @@ public class RegisterActivity extends Activity {
                 String mobile = inputMobileEditText.getText().toString().trim();
 
                 if (!mobile.isEmpty()) {
-                    registerUser(mobile);
+                    registerUser(RegisterActivity.this, mobile);
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "Please enter mobile number!", Toast.LENGTH_LONG)
@@ -75,19 +77,20 @@ public class RegisterActivity extends Activity {
      * Function to store user in MySQL database will post params(tag, name,
      * email, password) to register url
      */
-    private String registerUser(String mobile) {
-        return Pregister(AccountConstants.aquiredAccessToken, countryCode, mobile);
+    private String registerUser(Context context, String mobile) {
+        shared_pref_oauth2 = context.getSharedPreferences(AccountConstants.SHARED_PREF_OAUTH2, Context.MODE_PRIVATE);
+        return Pregister(shared_pref_oauth2.getString(AccountConstants.ACCESS_TOKEN, ""), countryCode, mobile);
 
     }
 
     public String sharedPrefSetter(Context context, Boolean status, String countryCode, String mobile) {
         if (status == true) {
             Log.d(TAG, "sharedPrefSetter: I am not getting called");
-            pref = context.getSharedPreferences("com.callie.status", Context.MODE_PRIVATE);
-            editor = pref.edit();
+            shared_pref_otp = context.getSharedPreferences(AccountConstants.SHARED_PREF_OTP, Context.MODE_PRIVATE);
+            editor = shared_pref_otp.edit();
             editor.putString(AccountConstants.IS_LOGGED_IN, "true");
-            editor.putString("country_code", countryCode);
-            editor.putString("mobile", mobile);
+            editor.putString(AccountConstants.COUNTRY_CODE, countryCode);
+            editor.putString(AccountConstants.MOBILE, mobile);
             editor.commit();
             goToOtpVerification();
         }

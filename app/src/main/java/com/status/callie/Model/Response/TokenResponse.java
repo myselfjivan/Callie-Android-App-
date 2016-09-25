@@ -13,7 +13,7 @@ public class TokenResponse {
         return tokenType;
     }
 
-    public Long getExpiresIn() {
+    public String getExpiresIn() {
         return expiresIn;
     }
 
@@ -31,7 +31,7 @@ public class TokenResponse {
 
     @SerializedName("expires_in")
     @Expose
-    private Long expiresIn;
+    private String expiresIn;
 
     @SerializedName("refresh_token")
     @Expose

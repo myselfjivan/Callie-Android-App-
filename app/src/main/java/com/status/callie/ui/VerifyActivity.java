@@ -34,7 +34,8 @@ public class VerifyActivity extends Activity {
     private EditText inputOtp;
     private String macAddress;
     GetMacAddress getMacAddress;
-    private SharedPreferences pref;
+    private SharedPreferences shared_pref_otp;
+    private SharedPreferences shared_pref_oauth2;
     SharedPreferences.Editor editor;
     String status_code;
 
@@ -45,8 +46,10 @@ public class VerifyActivity extends Activity {
         inputOtp = (EditText) findViewById(R.id.otp);
         btnVerify = (Button) findViewById(R.id.btn_verify);
         getMacAddress = new GetMacAddress();
-        pref = getPreferences(0);
-        pref = this.getSharedPreferences("com.callie.status", Context.MODE_PRIVATE);
+        shared_pref_otp = getPreferences(0);
+        shared_pref_oauth2 = getPreferences(0);
+        shared_pref_otp = this.getSharedPreferences(AccountConstants.SHARED_PREF_OTP, Context.MODE_PRIVATE);
+        shared_pref_oauth2 = this.getSharedPreferences(AccountConstants.SHARED_PREF_OAUTH2, Context.MODE_PRIVATE);
 
         macAddress = getMacAddress.getMacAddr();
 
@@ -56,7 +59,7 @@ public class VerifyActivity extends Activity {
             public void onClick(View view) {
                 String otp = inputOtp.getText().toString().trim();
                 if (!otp.isEmpty()) {
-                    verifyUser(otp, macAddress);
+                    verifyUser(VerifyActivity.this, otp, macAddress);
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "Please enter otp!", Toast.LENGTH_LONG)
@@ -71,8 +74,9 @@ public class VerifyActivity extends Activity {
      * Function to store user in MySQL database will post params(tag, name,
      * email, password) to register url
      */
-    private String verifyUser(String otp, String mac) {
-        return Pverify(AccountConstants.aquiredAccessToken, pref.getString("country_code", ""), pref.getString("mobile", ""), otp, mac);
+    private String verifyUser(Context context, String otp, String mac) {
+        shared_pref_oauth2 = context.getSharedPreferences(AccountConstants.SHARED_PREF_OAUTH2, Context.MODE_PRIVATE);
+        return Pverify(shared_pref_oauth2.getString(AccountConstants.ACCESS_TOKEN, ""), shared_pref_otp.getString(AccountConstants.COUNTRY_CODE, ""), shared_pref_otp.getString(AccountConstants.MOBILE, ""), otp, mac);
 
     }
 
@@ -103,7 +107,7 @@ public class VerifyActivity extends Activity {
                     pverifyResponse.setMessage(pverifyResponse.getMessage());
                     pverifyResponse.setStatus_code(pverifyResponse.getStatus_code());
                     //pregister.sharedPrefSetter(true);
-                    sharedPrefSetter(VerifyActivity.this);
+                    sharedPrefSetter(VerifyActivity.this, otp);
                 } else {
                     // parse the response body …
                     ApiError error;
@@ -127,11 +131,12 @@ public class VerifyActivity extends Activity {
         return status_code;
     }
 
-    public String sharedPrefSetter(Context context) {
+    public String sharedPrefSetter(Context context, String otp) {
         Log.d(TAG, "sharedPrefSetter: I am not getting called");
-        pref = context.getSharedPreferences("com.callie.status", Context.MODE_PRIVATE);
-        editor = pref.edit();
+        shared_pref_otp = context.getSharedPreferences(AccountConstants.SHARED_PREF_OTP, Context.MODE_PRIVATE);
+        editor = shared_pref_otp.edit();
         editor.putString(AccountConstants.IS_VERIFIED, "true");
+        editor.putString(AccountConstants.OTP, otp);
         editor.commit();
         return null;
     }

@@ -1,5 +1,7 @@
 package com.status.callie.Model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.status.callie.Model.Request.TokenRequest;
@@ -18,9 +20,20 @@ import retrofit2.Callback;
  */
 public class AccessToken {
     public String TAG = "Token Genration";
-    String accessTokne;
-    String token_status;
+    String access_token;
+    String token_type;
+    String expires_in;
     String refresh_token;
+    String token_status;
+
+    private SharedPreferences pref;
+    SharedPreferences.Editor editor;
+
+    private Context context;
+
+    public AccessToken(Context context) {
+        this.context = context;
+    }
 
     public String getToken() {
         TokenRequest tokenRequest = new TokenRequest();
@@ -43,8 +56,11 @@ public class AccessToken {
             @Override
             public void onResponse(Call<TokenResponse> call, retrofit2.Response<TokenResponse> response) {
                 TokenResponse tokenResponse = response.body();
-                accessTokne = tokenResponse.getAccessToken();
-                AccountConstants.aquiredAccessToken = accessTokne;
+                access_token = tokenResponse.getAccessToken();
+                expires_in = tokenResponse.getExpiresIn();
+                refresh_token = tokenResponse.getRefreshToken();
+                token_type = tokenResponse.getTokenType();
+                sharedPrefSetter(context, access_token, token_type, expires_in, refresh_token);
             }
 
             @Override
@@ -52,7 +68,7 @@ public class AccessToken {
                 Log.e("on failure", t.toString());
             }
         });
-        return accessTokne;
+        return access_token;
     }
 
     public String checkToken() {
@@ -79,8 +95,8 @@ public class AccessToken {
             @Override
             public void onResponse(Call<TokenResponse> call, retrofit2.Response<TokenResponse> response) {
                 TokenResponse tokenResponse = response.body();
-                accessTokne = tokenResponse.getAccessToken();
-                AccountConstants.aquiredAccessToken = accessTokne;
+                access_token = tokenResponse.getAccessToken();
+                AccountConstants.aquiredAccessToken = access_token;
             }
 
             @Override
@@ -89,6 +105,19 @@ public class AccessToken {
             }
         });
         return refresh_token;
+    }
+
+
+    public String sharedPrefSetter(Context context, String access_token, String token_type, String expires_in, String refresh_token) {
+        Log.d(TAG, "sharedPrefSetter: I am not getting called");
+        pref = context.getSharedPreferences(AccountConstants.SHARED_PREF_OAUTH2, Context.MODE_PRIVATE);
+        editor = pref.edit();
+        editor.putString(AccountConstants.ACCESS_TOKEN, access_token);
+        editor.putString(AccountConstants.TOKEN_TYPE, token_type);
+        editor.putString(AccountConstants.EXPIRES_IN, expires_in);
+        editor.putString(AccountConstants.REFRESH_TOKEN, refresh_token);
+        editor.commit();
+        return null;
     }
 
 }

@@ -20,12 +20,10 @@ import retrofit2.Callback;
 public class Register {
     public String TAG = "Register Request";
     String status_code;
-    Pregister pregister;
     RegisterActivity registerActivity = new RegisterActivity();
 
     // Gets the data repository in write mode
     public String Pregister(String accessToken, final String country_code, final String mobile) {
-        pregister = new Pregister();
         PregisterRequest pregisterRequest = new PregisterRequest();
         pregisterRequest.setAccessToken(accessToken);
         pregisterRequest.setCountry_code(country_code);
