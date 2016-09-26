@@ -34,8 +34,7 @@ public class Callie extends AppCompatActivity
         setSupportActionBar(toolbar);
         pref = getPreferences(0);
         pref = Callie.this.getSharedPreferences(AccountConstants.SHARED_PREF_OTP, Context.MODE_PRIVATE);
-        accessToken.getToken();
-        // SQLite database handler
+        accessToken.tokenCheck();
         db = new SqliteHelper(getApplicationContext());
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

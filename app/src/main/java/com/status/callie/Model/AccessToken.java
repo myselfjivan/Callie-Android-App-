@@ -26,7 +26,7 @@ public class AccessToken {
     String refresh_token;
     String token_status;
 
-    private SharedPreferences pref;
+    private SharedPreferences shared_pref_otp;
     SharedPreferences.Editor editor;
 
     private Context context;
@@ -71,16 +71,22 @@ public class AccessToken {
         return access_token;
     }
 
-    public String checkToken() {
-        return token_status;
+    public String tokenCheck() {
+        shared_pref_otp = context.getSharedPreferences(AccountConstants.SHARED_PREF_OAUTH2, Context.MODE_PRIVATE);
+        if (shared_pref_otp.getString(AccountConstants.ACCESS_TOKEN, "") != null) {
+            getToken();
+        } else {
+        }
+        return null;
     }
 
     public String getRefreshToken(String old_refresh_token) {
+        shared_pref_otp = context.getSharedPreferences(AccountConstants.SHARED_PREF_OAUTH2, Context.MODE_PRIVATE);
         TokenRequest tokenRequest = new TokenRequest();
         tokenRequest.setGrant_type(AccountConstants.GRANT_TYPE_REFRESH_TOKEN);
         tokenRequest.setClient_id(AccountConstants.CLIENT_ID);
         tokenRequest.setClient_secret(AccountConstants.CLIENT_SECRET);
-        tokenRequest.setRefresh_token(old_refresh_token);
+        tokenRequest.setRefresh_token(shared_pref_otp.getString(AccountConstants.REFRESH_TOKEN, ""));
 
         ApiInterface apiService = null;
         try {
@@ -96,7 +102,10 @@ public class AccessToken {
             public void onResponse(Call<TokenResponse> call, retrofit2.Response<TokenResponse> response) {
                 TokenResponse tokenResponse = response.body();
                 access_token = tokenResponse.getAccessToken();
-                AccountConstants.aquiredAccessToken = access_token;
+                expires_in = tokenResponse.getExpiresIn();
+                refresh_token = tokenResponse.getRefreshToken();
+                token_type = tokenResponse.getTokenType();
+                sharedPrefSetter(context, access_token, token_type, expires_in, refresh_token);
             }
 
             @Override
@@ -110,8 +119,8 @@ public class AccessToken {
 
     public String sharedPrefSetter(Context context, String access_token, String token_type, String expires_in, String refresh_token) {
         Log.d(TAG, "sharedPrefSetter: I am not getting called");
-        pref = context.getSharedPreferences(AccountConstants.SHARED_PREF_OAUTH2, Context.MODE_PRIVATE);
-        editor = pref.edit();
+        shared_pref_otp = context.getSharedPreferences(AccountConstants.SHARED_PREF_OAUTH2, Context.MODE_PRIVATE);
+        editor = shared_pref_otp.edit();
         editor.putString(AccountConstants.ACCESS_TOKEN, access_token);
         editor.putString(AccountConstants.TOKEN_TYPE, token_type);
         editor.putString(AccountConstants.EXPIRES_IN, expires_in);
