@@ -8,7 +8,9 @@ import com.status.callie.Model.Request.TokenRequest;
 import com.status.callie.Model.Response.TokenResponse;
 import com.status.callie.accounts.AccountConstants;
 import com.status.callie.services.ApiClient;
+import com.status.callie.services.ApiError;
 import com.status.callie.services.ApiInterface;
+import com.status.callie.services.ErrorUtils;
 
 import java.io.IOException;
 
@@ -24,7 +26,6 @@ public class AccessToken {
     String token_type;
     String expires_in;
     String refresh_token;
-    String token_status;
 
     private SharedPreferences shared_pref_otp;
     SharedPreferences.Editor editor;
@@ -35,7 +36,21 @@ public class AccessToken {
         this.context = context;
     }
 
+    public String tokenCheck() {
+        shared_pref_otp = context.getSharedPreferences(AccountConstants.SHARED_PREF_OAUTH2, Context.MODE_PRIVATE);
+        if (shared_pref_otp.getString(AccountConstants.ACCESS_TOKEN, "") != null) {
+            getRefreshToken();
+        } else {
+            getToken();
+        }
+        return null;
+    }
+
     public String getToken() {
+
+        if (shared_pref_otp.getString(AccountConstants.ACCESS_TOKEN, "") != null) {
+            getRefreshToken();
+        }
         TokenRequest tokenRequest = new TokenRequest();
         tokenRequest.setGrant_type(AccountConstants.GRANT_TYPE_PASSWORD);
         tokenRequest.setClient_id(AccountConstants.CLIENT_ID);
@@ -55,12 +70,24 @@ public class AccessToken {
         call.enqueue(new Callback<TokenResponse>() {
             @Override
             public void onResponse(Call<TokenResponse> call, retrofit2.Response<TokenResponse> response) {
-                TokenResponse tokenResponse = response.body();
-                access_token = tokenResponse.getAccessToken();
-                expires_in = tokenResponse.getExpiresIn();
-                refresh_token = tokenResponse.getRefreshToken();
-                token_type = tokenResponse.getTokenType();
-                sharedPrefSetter(context, access_token, token_type, expires_in, refresh_token);
+                if (response.isSuccessful()) {
+                    TokenResponse tokenResponse = response.body();
+                    access_token = tokenResponse.getAccessToken();
+                    expires_in = tokenResponse.getExpiresIn();
+                    refresh_token = tokenResponse.getRefreshToken();
+                    token_type = tokenResponse.getTokenType();
+                    sharedPrefSetter(context, access_token, token_type, expires_in, refresh_token);
+                } else {
+                    // parse the response body …
+                    ApiError error;
+                    try {
+                        error = ErrorUtils.parseError(response);
+                        Log.d("error message", error.message());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
 
             @Override
@@ -71,16 +98,8 @@ public class AccessToken {
         return access_token;
     }
 
-    public String tokenCheck() {
-        shared_pref_otp = context.getSharedPreferences(AccountConstants.SHARED_PREF_OAUTH2, Context.MODE_PRIVATE);
-        if (shared_pref_otp.getString(AccountConstants.ACCESS_TOKEN, "") != null) {
-            getToken();
-        } else {
-        }
-        return null;
-    }
 
-    public String getRefreshToken(String old_refresh_token) {
+    public String getRefreshToken() {
         shared_pref_otp = context.getSharedPreferences(AccountConstants.SHARED_PREF_OAUTH2, Context.MODE_PRIVATE);
         TokenRequest tokenRequest = new TokenRequest();
         tokenRequest.setGrant_type(AccountConstants.GRANT_TYPE_REFRESH_TOKEN);
@@ -100,12 +119,25 @@ public class AccessToken {
         call.enqueue(new Callback<TokenResponse>() {
             @Override
             public void onResponse(Call<TokenResponse> call, retrofit2.Response<TokenResponse> response) {
-                TokenResponse tokenResponse = response.body();
-                access_token = tokenResponse.getAccessToken();
-                expires_in = tokenResponse.getExpiresIn();
-                refresh_token = tokenResponse.getRefreshToken();
-                token_type = tokenResponse.getTokenType();
-                sharedPrefSetter(context, access_token, token_type, expires_in, refresh_token);
+                if (response.isSuccessful()) {
+                    TokenResponse tokenResponse = response.body();
+                    access_token = tokenResponse.getAccessToken();
+                    expires_in = tokenResponse.getExpiresIn();
+                    refresh_token = tokenResponse.getRefreshToken();
+                    token_type = tokenResponse.getTokenType();
+                    sharedPrefSetter(context, access_token, token_type, expires_in, refresh_token);
+                } else {
+                    // parse the response body …
+                    ApiError error;
+                    try {
+                        getToken();
+                        error = ErrorUtils.parseError(response);
+                        Log.d("error message", error.message());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
 
             @Override

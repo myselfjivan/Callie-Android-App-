@@ -10,13 +10,8 @@ import android.util.Log;
 public class IntentService extends android.app.IntentService {
     public String TAG = "Intent Service";
 
-    /**
-     * Creates an IntentService.  Invoked by your subclass's constructor.
-     *
-     * @param name Used to name the worker thread, important only for debugging.
-     */
-    public IntentService(String name) {
-        super(name);
+    public IntentService() {
+        super("IntentService");
     }
 
     @Override

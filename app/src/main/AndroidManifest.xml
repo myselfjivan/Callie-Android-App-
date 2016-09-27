@@ -29,7 +29,7 @@
         <activity android:name=".ui.VerifyActivity">
 
         </activity>
-        <activity android:name=".Home">
+        <activity android:name=".ui.Home">
 
         </activity>
 
@@ -38,6 +38,13 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name=".services.MyAlarmReceiver"
+            android:process=":remote"></receiver>
+
+        <service
+            android:name=".services.IntentService"
+            android:exported="false" />
     </application>
 
 </manifest>
