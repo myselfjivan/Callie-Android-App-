@@ -47,10 +47,6 @@ public class AccessToken {
     }
 
     public String getToken() {
-
-        if (shared_pref_otp.getString(AccountConstants.ACCESS_TOKEN, "") != null) {
-            getRefreshToken();
-        }
         TokenRequest tokenRequest = new TokenRequest();
         tokenRequest.setGrant_type(AccountConstants.GRANT_TYPE_PASSWORD);
         tokenRequest.setClient_id(AccountConstants.CLIENT_ID);

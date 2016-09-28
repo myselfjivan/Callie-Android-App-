@@ -2,6 +2,7 @@ package com.status.callie.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -104,10 +105,7 @@ public class VerifyActivity extends Activity {
                 if (response.isSuccessful()) {
                     PverifyResponse pverifyResponse = response.body();
                     Log.d(TAG, "onResponse: " + pverifyResponse.getMessage());
-                    pverifyResponse.setMessage(pverifyResponse.getMessage());
-                    pverifyResponse.setStatus_code(pverifyResponse.getStatus_code());
-                    //pregister.sharedPrefSetter(true);
-                    sharedPrefSetter(VerifyActivity.this, otp);
+                    verified(pverifyResponse.getStatus_code(), otp);
                 } else {
                     // parse the response body …
                     ApiError error;
@@ -131,11 +129,34 @@ public class VerifyActivity extends Activity {
         return status_code;
     }
 
+    public String verified(String statusCode, String otp) {
+        switch (statusCode) {
+            case "1":
+                sharedPrefSetter(VerifyActivity.this, otp);
+                Intent intent = new Intent(VerifyActivity.this, Home.class);
+                startActivity(intent);
+                break;
+            case "0":
+                Toast.makeText(getApplicationContext(),
+                        "Wrong otp!", Toast.LENGTH_LONG)
+                        .show();
+                break;
+            default:
+                Toast.makeText(getApplicationContext(),
+                        "Something Went Wrong!", Toast.LENGTH_LONG)
+                        .show();
+                break;
+
+        }
+        return null;
+    }
+
     public String sharedPrefSetter(Context context, String otp) {
         Log.d(TAG, "sharedPrefSetter: I am not getting called");
         shared_pref_otp = context.getSharedPreferences(AccountConstants.SHARED_PREF_OTP, Context.MODE_PRIVATE);
         editor = shared_pref_otp.edit();
         editor.putString(AccountConstants.IS_VERIFIED, "true");
+        editor.putString(AccountConstants.IS_LOGGED_IN, "true");
         editor.putString(AccountConstants.OTP, otp);
         editor.commit();
         return null;

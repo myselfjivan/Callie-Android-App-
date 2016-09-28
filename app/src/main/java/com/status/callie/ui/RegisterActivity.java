@@ -88,7 +88,7 @@ public class RegisterActivity extends Activity {
             Log.d(TAG, "sharedPrefSetter: I am not getting called");
             shared_pref_otp = context.getSharedPreferences(AccountConstants.SHARED_PREF_OTP, Context.MODE_PRIVATE);
             editor = shared_pref_otp.edit();
-            editor.putString(AccountConstants.IS_LOGGED_IN, "true");
+            editor.putString(AccountConstants.IS_LOGGED_IN, "false");
             editor.putString(AccountConstants.COUNTRY_CODE, countryCode);
             editor.putString(AccountConstants.MOBILE, mobile);
             editor.commit();

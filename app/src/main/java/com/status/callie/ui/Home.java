@@ -14,4 +14,10 @@ public class Home extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
     }
+
+    @Override
+    public void onBackPressed() {
+
+        // your code.
+    }
 }
