@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import com.status.callie.Model.AccessToken;
 import com.status.callie.accounts.AccountConstants;
+import com.status.callie.ui.Home;
 import com.status.callie.ui.RegisterActivity;
 
 /**
@@ -15,13 +17,13 @@ public class SessionManager {
     // Context
     Context _context;
     private SharedPreferences shared_pref_otp;
-    SharedPreferences.Editor editor;
+    AccessToken accessToken = new AccessToken(_context);
+    String TAG = "Session Manager";
 
     // Constructor
     public SessionManager(Context context) {
         this._context = context;
         shared_pref_otp = _context.getSharedPreferences(AccountConstants.SHARED_PREF_OTP, context.MODE_PRIVATE);
-        editor = shared_pref_otp.edit();
     }
 
     /**
@@ -30,19 +32,26 @@ public class SessionManager {
      * Else won't do anything
      */
     public void checkLogin() {
-        // Check login status
-        if (this.isLoggedIn() != "true") {
-            // user is not logged in redirect him to Login Activity
-            Intent i = new Intent(_context, RegisterActivity.class);
-            // Closing all the Activities
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        switch (this.isLoggedIn()) {
+            case "true":
+                accessToken.jwtToken();
+                Intent intent = new Intent(_context, Home.class);
+                _context.startActivity(intent);
+                break;
+            default:
+                Intent goBackToRegister = new Intent(_context, RegisterActivity.class);
+                // Closing all the Activities
+                goBackToRegister.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-            // Add new Flag to start new Activity
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                // Add new Flag to start new Activity
+                goBackToRegister.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            // Staring Login Activity
-            _context.startActivity(i);
+                // Staring Login Activity
+                _context.startActivity(goBackToRegister);
+                break;
+
         }
+
     }
 
     /**
@@ -50,6 +59,9 @@ public class SessionManager {
      **/
     // Get Login State
     public String isLoggedIn() {
-        return shared_pref_otp.getString(AccountConstants.IS_LOGGED_IN, "");
+        if (shared_pref_otp.getString(AccountConstants.ACCESS_TOKEN, "") != null) {
+            return shared_pref_otp.getString(AccountConstants.IS_LOGGED_IN, "");
+        }
+        return "false";
     }
 }

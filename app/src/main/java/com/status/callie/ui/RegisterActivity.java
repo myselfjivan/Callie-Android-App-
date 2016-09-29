@@ -102,6 +102,11 @@ public class RegisterActivity extends Activity {
         startActivity(intent);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
     public String Pregister(String accessToken, final String country_code, final String mobile) {
         PregisterRequest pregisterRequest = new PregisterRequest();
         pregisterRequest.setAccessToken(accessToken);

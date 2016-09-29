@@ -4,9 +4,11 @@ package com.status.callie.services;
  * Created by jivan.ghadage on 8/23/2016.
  */
 
+import com.status.callie.Model.Request.LoginRequest;
 import com.status.callie.Model.Request.PregisterRequest;
 import com.status.callie.Model.Request.PverifyRequest;
 import com.status.callie.Model.Request.TokenRequest;
+import com.status.callie.Model.Response.LoginResponse;
 import com.status.callie.Model.Response.PregisterResponse;
 import com.status.callie.Model.Response.PverifyResponse;
 import com.status.callie.Model.Response.TokenResponse;
@@ -28,4 +30,7 @@ public interface ApiInterface {
 
     @POST("auth/pverify")
     Call<PverifyResponse> authPverify(@Body PverifyRequest pverifyRequest);
+
+    @POST("auth/login")
+    Call<LoginResponse> authLogin(@Body LoginRequest loginRequest);
 }

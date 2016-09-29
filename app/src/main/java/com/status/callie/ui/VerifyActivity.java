@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.status.callie.Model.AccessToken;
 import com.status.callie.Model.Request.PverifyRequest;
 import com.status.callie.Model.Response.PverifyResponse;
 import com.status.callie.R;
@@ -19,6 +20,7 @@ import com.status.callie.accounts.AccountConstants;
 import com.status.callie.services.ApiClient;
 import com.status.callie.services.ApiError;
 import com.status.callie.services.ApiInterface;
+import com.status.callie.services.CallieSharedPreferences;
 import com.status.callie.services.ErrorUtils;
 
 import java.io.IOException;
@@ -35,10 +37,11 @@ public class VerifyActivity extends Activity {
     private EditText inputOtp;
     private String macAddress;
     GetMacAddress getMacAddress;
+    AccessToken accessToken;
     private SharedPreferences shared_pref_otp;
     private SharedPreferences shared_pref_oauth2;
-    SharedPreferences.Editor editor;
     String status_code;
+    CallieSharedPreferences callieSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,8 @@ public class VerifyActivity extends Activity {
         inputOtp = (EditText) findViewById(R.id.otp);
         btnVerify = (Button) findViewById(R.id.btn_verify);
         getMacAddress = new GetMacAddress();
+        accessToken = new AccessToken(VerifyActivity.this);
+        callieSharedPreferences = new CallieSharedPreferences();
         shared_pref_otp = getPreferences(0);
         shared_pref_oauth2 = getPreferences(0);
         shared_pref_otp = this.getSharedPreferences(AccountConstants.SHARED_PREF_OTP, Context.MODE_PRIVATE);
@@ -54,7 +59,6 @@ public class VerifyActivity extends Activity {
 
         macAddress = getMacAddress.getMacAddr();
 
-        // PregisterRequest Button Click event
         btnVerify.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
@@ -76,7 +80,6 @@ public class VerifyActivity extends Activity {
      * email, password) to register url
      */
     private String verifyUser(Context context, String otp, String mac) {
-        shared_pref_oauth2 = context.getSharedPreferences(AccountConstants.SHARED_PREF_OAUTH2, Context.MODE_PRIVATE);
         return Pverify(shared_pref_oauth2.getString(AccountConstants.ACCESS_TOKEN, ""), shared_pref_otp.getString(AccountConstants.COUNTRY_CODE, ""), shared_pref_otp.getString(AccountConstants.MOBILE, ""), otp, mac);
 
     }
@@ -110,7 +113,6 @@ public class VerifyActivity extends Activity {
                     // parse the response body …
                     ApiError error;
                     try {
-                        //pregister.sharedPrefSetter(false, country_code, mobile);
                         error = ErrorUtils.parseError(response);
                         Log.d("error message", error.message());
                     } catch (IOException e) {
@@ -132,7 +134,8 @@ public class VerifyActivity extends Activity {
     public String verified(String statusCode, String otp) {
         switch (statusCode) {
             case "1":
-                sharedPrefSetter(VerifyActivity.this, otp);
+                accessToken.jwtToken();
+                callieSharedPreferences.otp(VerifyActivity.this, otp);
                 Intent intent = new Intent(VerifyActivity.this, Home.class);
                 startActivity(intent);
                 break;
@@ -151,15 +154,5 @@ public class VerifyActivity extends Activity {
         return null;
     }
 
-    public String sharedPrefSetter(Context context, String otp) {
-        Log.d(TAG, "sharedPrefSetter: I am not getting called");
-        shared_pref_otp = context.getSharedPreferences(AccountConstants.SHARED_PREF_OTP, Context.MODE_PRIVATE);
-        editor = shared_pref_otp.edit();
-        editor.putString(AccountConstants.IS_VERIFIED, "true");
-        editor.putString(AccountConstants.IS_LOGGED_IN, "true");
-        editor.putString(AccountConstants.OTP, otp);
-        editor.commit();
-        return null;
-    }
 
 }

@@ -4,12 +4,16 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.status.callie.Model.Request.LoginRequest;
 import com.status.callie.Model.Request.TokenRequest;
+import com.status.callie.Model.Response.LoginResponse;
 import com.status.callie.Model.Response.TokenResponse;
+import com.status.callie.System.GetMacAddress;
 import com.status.callie.accounts.AccountConstants;
 import com.status.callie.services.ApiClient;
 import com.status.callie.services.ApiError;
 import com.status.callie.services.ApiInterface;
+import com.status.callie.services.CallieSharedPreferences;
 import com.status.callie.services.ErrorUtils;
 
 import java.io.IOException;
@@ -23,12 +27,14 @@ import retrofit2.Callback;
 public class AccessToken {
     public String TAG = "Token Genration";
     String access_token;
+    String jwt_token;
     String token_type;
     String expires_in;
     String refresh_token;
 
     private SharedPreferences shared_pref_otp;
-    SharedPreferences.Editor editor;
+    private SharedPreferences shared_pref_token;
+    CallieSharedPreferences callieSharedPreferences = new CallieSharedPreferences();
 
     private Context context;
 
@@ -72,7 +78,7 @@ public class AccessToken {
                     expires_in = tokenResponse.getExpiresIn();
                     refresh_token = tokenResponse.getRefreshToken();
                     token_type = tokenResponse.getTokenType();
-                    sharedPrefSetter(context, access_token, token_type, expires_in, refresh_token);
+                    callieSharedPreferences.oauth2(context, access_token, token_type, expires_in, refresh_token);
                 } else {
                     // parse the response body …
                     ApiError error;
@@ -121,7 +127,7 @@ public class AccessToken {
                     expires_in = tokenResponse.getExpiresIn();
                     refresh_token = tokenResponse.getRefreshToken();
                     token_type = tokenResponse.getTokenType();
-                    sharedPrefSetter(context, access_token, token_type, expires_in, refresh_token);
+                    callieSharedPreferences.oauth2(context, access_token, token_type, expires_in, refresh_token);
                 } else {
                     // parse the response body …
                     ApiError error;
@@ -144,17 +150,52 @@ public class AccessToken {
         return refresh_token;
     }
 
+    public String jwtToken() {
+        shared_pref_otp = context.getSharedPreferences(AccountConstants.SHARED_PREF_OTP, Context.MODE_PRIVATE);
+        shared_pref_token = context.getSharedPreferences(AccountConstants.SHARED_PREF_OAUTH2, Context.MODE_PRIVATE);
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setAccessToken(shared_pref_token.getString(AccountConstants.ACCESS_TOKEN, ""));
+        loginRequest.setMobile(shared_pref_otp.getString(AccountConstants.MOBILE, ""));
+        loginRequest.setPassword(shared_pref_otp.getString(AccountConstants.OTP, "") + GetMacAddress.getMacAddr());
 
-    public String sharedPrefSetter(Context context, String access_token, String token_type, String expires_in, String refresh_token) {
-        Log.d(TAG, "sharedPrefSetter: I am not getting called");
-        shared_pref_otp = context.getSharedPreferences(AccountConstants.SHARED_PREF_OAUTH2, Context.MODE_PRIVATE);
-        editor = shared_pref_otp.edit();
-        editor.putString(AccountConstants.ACCESS_TOKEN, access_token);
-        editor.putString(AccountConstants.TOKEN_TYPE, token_type);
-        editor.putString(AccountConstants.EXPIRES_IN, expires_in);
-        editor.putString(AccountConstants.REFRESH_TOKEN, refresh_token);
-        editor.commit();
+        ApiInterface apiService = null;
+        try {
+            apiService = ApiClient.getClient().create(ApiInterface.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        Call<LoginResponse> call = apiService.authLogin(loginRequest);
+        call.enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, retrofit2.Response<LoginResponse> response) {
+                if (response.isSuccessful()) {
+                    LoginResponse loginResponse = response.body();
+                    jwt_token = loginResponse.getToken();
+                    //sharedPrefSetter(context, access_token);
+                    callieSharedPreferences.login(context, jwt_token);
+                } else {
+                    // parse the response body …
+                    ApiError error;
+                    try {
+                        //getToken();
+                        error = ErrorUtils.parseError(response);
+                        Log.d("error message", error.message());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                Log.e("on failure", t.toString());
+            }
+        });
         return null;
     }
+
 
 }

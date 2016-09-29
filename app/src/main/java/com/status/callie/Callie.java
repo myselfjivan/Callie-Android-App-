@@ -19,6 +19,7 @@ import com.status.callie.Model.AccessToken;
 import com.status.callie.Model.SqliteHelper;
 import com.status.callie.accounts.AccountConstants;
 import com.status.callie.services.MyAlarmReceiver;
+import com.status.callie.services.SessionManager;
 import com.status.callie.ui.Home;
 import com.status.callie.ui.RegisterActivity;
 
@@ -28,6 +29,7 @@ public class Callie extends AppCompatActivity
     AccessToken accessToken = new AccessToken(Callie.this);
     public String TAG = "Callie";
     SqliteHelper db;
+    SessionManager sessionManager;
     private SharedPreferences pref;
 
     @Override
@@ -38,8 +40,8 @@ public class Callie extends AppCompatActivity
         setSupportActionBar(toolbar);
         pref = getPreferences(0);
         pref = Callie.this.getSharedPreferences(AccountConstants.SHARED_PREF_OTP, Context.MODE_PRIVATE);
-        //accessToken.tokenCheck();
         db = new SqliteHelper(getApplicationContext());
+        sessionManager = new SessionManager(Callie.this);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -49,7 +51,7 @@ public class Callie extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        initFragment();
+        sessionManager.checkLogin();
         scheduleAlarm();
 
     }
@@ -109,17 +111,6 @@ public class Callie extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    private void initFragment() {
-        //Fragment fragment;
-        if ((pref.getString(AccountConstants.IS_LOGGED_IN, "") != "true" && pref.getString(AccountConstants.IS_VERIFIED, "") != "true")) {
-            Intent intent = new Intent(Callie.this, RegisterActivity.class);
-            startActivity(intent);
-        } else {
-            Intent intent = new Intent(Callie.this, Home.class);
-            startActivity(intent);
-        }
     }
 
     // Setup a recurring alarm every half hour
