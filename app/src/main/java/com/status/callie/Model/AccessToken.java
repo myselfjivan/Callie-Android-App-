@@ -155,8 +155,10 @@ public class AccessToken {
         shared_pref_token = context.getSharedPreferences(AccountConstants.SHARED_PREF_OAUTH2, Context.MODE_PRIVATE);
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setAccessToken(shared_pref_token.getString(AccountConstants.ACCESS_TOKEN, ""));
-        loginRequest.setMobile(shared_pref_otp.getString(AccountConstants.MOBILE, ""));
-        loginRequest.setPassword(shared_pref_otp.getString(AccountConstants.OTP, "") + GetMacAddress.getMacAddr());
+        String country_code = shared_pref_otp.getString(AccountConstants.COUNTRY_CODE, "");
+        loginRequest.setMobile(country_code + shared_pref_otp.getString(AccountConstants.MOBILE, ""));
+        String otp = shared_pref_otp.getString(AccountConstants.OTP, "");
+        loginRequest.setPassword(otp + GetMacAddress.getMacAddr());
 
         ApiInterface apiService = null;
         try {

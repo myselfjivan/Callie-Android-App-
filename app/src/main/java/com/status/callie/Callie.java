@@ -14,11 +14,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.status.callie.Model.AccessToken;
 import com.status.callie.Model.SqliteHelper;
 import com.status.callie.accounts.AccountConstants;
 import com.status.callie.services.MyAlarmReceiver;
+import com.status.callie.services.ServiceCallie;
 import com.status.callie.services.SessionManager;
 import com.status.callie.ui.Home;
 import com.status.callie.ui.RegisterActivity;
@@ -50,7 +52,7 @@ public class Callie extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        startService();
         sessionManager.checkLogin();
         scheduleAlarm();
 
@@ -129,6 +131,11 @@ public class Callie extends AppCompatActivity
                 AlarmManager.INTERVAL_DAY, pIntent);
         //accessToken.getRefreshToken();
         accessToken.tokenCheck();
+    }
+
+    // Method to start the service
+    public void startService() {
+        startService(new Intent(getBaseContext(), ServiceCallie.class));
     }
 
 }

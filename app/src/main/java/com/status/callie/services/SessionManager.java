@@ -34,7 +34,8 @@ public class SessionManager {
     public void checkLogin() {
         switch (this.isLoggedIn()) {
             case "true":
-                accessToken.jwtToken();
+                //accessToken.jwtToken();
+
                 Intent intent = new Intent(_context, Home.class);
                 _context.startActivity(intent);
                 break;

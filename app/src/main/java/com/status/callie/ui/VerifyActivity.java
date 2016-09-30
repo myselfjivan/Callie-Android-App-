@@ -118,7 +118,6 @@ public class VerifyActivity extends Activity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
 

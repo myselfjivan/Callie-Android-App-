@@ -32,5 +32,8 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.0'
     compile 'com.hbb20:ccp:1.5.1'
 
+    //material edit text
+    compile 'com.rengwuxian.materialedittext:library:2.1.4'
+
 
 }
