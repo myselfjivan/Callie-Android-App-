@@ -13,12 +13,14 @@ public class CallieSharedPreferences {
     private android.content.SharedPreferences shared_pref_otp;
     android.content.SharedPreferences.Editor editor;
 
-    public String otp(Context context, String otp) {
+    public String otp(Context context, String is_logged_in, String is_verified, String mobile, String countryCode, String otp) {
         Log.d(TAG, "sharedPrefSetter: I am not getting called");
         shared_pref_otp = context.getSharedPreferences(AccountConstants.SHARED_PREF_OTP, Context.MODE_PRIVATE);
         editor = shared_pref_otp.edit();
-        editor.putString(AccountConstants.IS_VERIFIED, "true");
-        editor.putString(AccountConstants.IS_LOGGED_IN, "true");
+        editor.putString(AccountConstants.IS_LOGGED_IN, is_logged_in);
+        editor.putString(AccountConstants.IS_VERIFIED, is_verified);
+        editor.putString(AccountConstants.COUNTRY_CODE, countryCode);
+        editor.putString(AccountConstants.MOBILE, mobile);
         editor.putString(AccountConstants.OTP, otp);
         editor.commit();
         return null;

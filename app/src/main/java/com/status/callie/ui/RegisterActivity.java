@@ -20,6 +20,7 @@ import com.status.callie.accounts.AccountConstants;
 import com.status.callie.services.ApiClient;
 import com.status.callie.services.ApiError;
 import com.status.callie.services.ApiInterface;
+import com.status.callie.services.CallieSharedPreferences;
 import com.status.callie.services.ErrorUtils;
 
 import java.io.IOException;
@@ -37,9 +38,8 @@ public class RegisterActivity extends Activity {
     private String countryCode;
     Register register;
     CountryCodePicker ccp;
-    private SharedPreferences shared_pref_otp;
     private SharedPreferences shared_pref_oauth2;
-    SharedPreferences.Editor editor;
+    CallieSharedPreferences callieSharedPreferences;
     String status_code;
 
     @Override
@@ -47,8 +47,8 @@ public class RegisterActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pregister);
         register = new Register();
-        shared_pref_otp = getPreferences(0);
         shared_pref_oauth2 = getPreferences(0);
+        callieSharedPreferences = new CallieSharedPreferences();
 
 
         btnRegister = (Button) findViewById(R.id.btn_register);
@@ -83,24 +83,27 @@ public class RegisterActivity extends Activity {
 
     }
 
-    public String sharedPrefSetter(Context context, Boolean status, String countryCode, String mobile) {
-        if (status == true) {
-            Log.d(TAG, "sharedPrefSetter: I am not getting called");
-            shared_pref_otp = context.getSharedPreferences(AccountConstants.SHARED_PREF_OTP, Context.MODE_PRIVATE);
-            editor = shared_pref_otp.edit();
-            editor.putString(AccountConstants.IS_LOGGED_IN, "false");
-            editor.putString(AccountConstants.COUNTRY_CODE, countryCode);
-            editor.putString(AccountConstants.MOBILE, mobile);
-            editor.commit();
-            goToOtpVerification();
+    public String verification(Context context, String status_code, String countryCode, String mobile) {
+        switch (status_code) {
+            case "1":
+                callieSharedPreferences.otp(context, "false", "false", mobile, countryCode, "");
+                Intent intent = new Intent(RegisterActivity.this, VerifyActivity.class);
+                startActivity(intent);
+                break;
+            case "0":
+                Toast.makeText(getApplicationContext(),
+                        "Mobile number is incorrect!", Toast.LENGTH_LONG)
+                        .show();
+            default:
+                Toast.makeText(getApplicationContext(),
+                        "Something went wrong, try again?", Toast.LENGTH_LONG)
+                        .show();
+                break;
+
         }
         return null;
     }
 
-    public void goToOtpVerification() {
-        Intent intent = new Intent(RegisterActivity.this, VerifyActivity.class);
-        startActivity(intent);
-    }
 
     @Override
     public void onBackPressed() {
@@ -127,13 +130,14 @@ public class RegisterActivity extends Activity {
             public void onResponse(retrofit2.Call<PregisterResponse> call, retrofit2.Response<PregisterResponse> response) {
                 if (response.isSuccessful()) {
                     PregisterResponse pregisterResponse = response.body();
-                    Log.d(TAG, "onResponse: " + pregisterResponse.getMessage());
-                    sharedPrefSetter(RegisterActivity.this, true, country_code, mobile);
+                    status_code = pregisterResponse.getStatus_code();
+                    verification(RegisterActivity.this, status_code, country_code, mobile);
                 } else {
                     // parse the response body …
                     ApiError error;
                     try {
                         error = ErrorUtils.parseError(response);
+                        verification(RegisterActivity.this, String.valueOf(error.status()), country_code, mobile);
                         Log.d("error message", error.message());
                     } catch (IOException e) {
                         e.printStackTrace();

@@ -7,10 +7,12 @@ package com.status.callie.services;
 import com.status.callie.Model.Request.LoginRequest;
 import com.status.callie.Model.Request.PregisterRequest;
 import com.status.callie.Model.Request.PverifyRequest;
+import com.status.callie.Model.Request.StatusRequest;
 import com.status.callie.Model.Request.TokenRequest;
 import com.status.callie.Model.Response.LoginResponse;
 import com.status.callie.Model.Response.PregisterResponse;
 import com.status.callie.Model.Response.PverifyResponse;
+import com.status.callie.Model.Response.StatusResponse;
 import com.status.callie.Model.Response.TokenResponse;
 
 import retrofit2.Call;
@@ -33,4 +35,7 @@ public interface ApiInterface {
 
     @POST("auth/login")
     Call<LoginResponse> authLogin(@Body LoginRequest loginRequest);
+
+    @POST("status/store")
+    Call<StatusResponse> statusStore(@Body StatusRequest statusRequest);
 }

@@ -108,7 +108,7 @@ public class VerifyActivity extends Activity {
                 if (response.isSuccessful()) {
                     PverifyResponse pverifyResponse = response.body();
                     Log.d(TAG, "onResponse: " + pverifyResponse.getMessage());
-                    verified(pverifyResponse.getStatus_code(), otp);
+                    verified(pverifyResponse.getStatus_code(), mobile, country_code, otp);
                 } else {
                     // parse the response body …
                     ApiError error;
@@ -130,11 +130,11 @@ public class VerifyActivity extends Activity {
         return status_code;
     }
 
-    public String verified(String statusCode, String otp) {
+    public String verified(String statusCode, String mobile, String country_code, String otp) {
         switch (statusCode) {
             case "1":
                 accessToken.jwtToken();
-                callieSharedPreferences.otp(VerifyActivity.this, otp);
+                callieSharedPreferences.otp(VerifyActivity.this, "true", "true", mobile, country_code, otp);
                 Intent intent = new Intent(VerifyActivity.this, Home.class);
                 startActivity(intent);
                 break;
