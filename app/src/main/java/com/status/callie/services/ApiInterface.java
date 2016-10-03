@@ -17,7 +17,9 @@ import com.status.callie.Model.Response.TokenResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Url;
 
 public interface ApiInterface {
 
@@ -36,6 +38,9 @@ public interface ApiInterface {
     @POST("auth/login")
     Call<LoginResponse> authLogin(@Body LoginRequest loginRequest);
 
-    @POST("status/store")
-    Call<StatusResponse> statusStore(@Body StatusRequest statusRequest);
+    @POST("status/store?token={token}")
+    Call<StatusResponse> statusStore(@Body StatusRequest statusRequest, @Url String token);
+
+    @GET("status?token={token}")
+    Call<StatusResponse> statusGet(@Body StatusRequest statusRequest, @Url String token);
 }
