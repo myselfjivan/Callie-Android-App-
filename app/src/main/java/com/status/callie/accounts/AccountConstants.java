@@ -8,6 +8,9 @@ public class AccountConstants {
 
     public static String JWT_ACCESS_TOKEN = "jwt_token";
 
+    //base url with token
+    public static String APP_NOTE_URL_TOKEN;
+
     //user statuses
     public static final String SUCCESS = "success";
     public static final String FAILURE = "failure";

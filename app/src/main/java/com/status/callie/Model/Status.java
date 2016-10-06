@@ -5,7 +5,9 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.status.callie.Model.Request.LoginRequest;
+import com.status.callie.Model.Request.StatusRequest;
 import com.status.callie.Model.Response.LoginResponse;
+import com.status.callie.Model.Response.StatusResponse;
 import com.status.callie.System.GetMacAddress;
 import com.status.callie.accounts.AccountConstants;
 import com.status.callie.services.ApiClient;
@@ -33,7 +35,7 @@ public class Status {
     String expires_in;
     String refresh_token;
 
-    private SharedPreferences shared_pref_otp;
+    private SharedPreferences shared_pref_login;
     private SharedPreferences shared_pref_token;
     CallieSharedPreferences callieSharedPreferences = new CallieSharedPreferences();
 
@@ -42,41 +44,32 @@ public class Status {
     }
 
 
-    public String getStatus() {
-        shared_pref_otp = context.getSharedPreferences(AccountConstants.SHARED_PREF_OTP, Context.MODE_PRIVATE);
-        shared_pref_token = context.getSharedPreferences(AccountConstants.SHARED_PREF_OAUTH2, Context.MODE_PRIVATE);
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setAccessToken(shared_pref_token.getString(AccountConstants.ACCESS_TOKEN, ""));
-        String country_code = shared_pref_otp.getString(AccountConstants.COUNTRY_CODE, "");
-        loginRequest.setMobile(country_code + shared_pref_otp.getString(AccountConstants.MOBILE, ""));
-        String otp = shared_pref_otp.getString(AccountConstants.OTP, "");
-        loginRequest.setPassword(otp + GetMacAddress.getMacAddr());
+    public String setStatus(String status) {
+        shared_pref_login = context.getSharedPreferences(AccountConstants.SHARED_PREF_LOGIN, Context.MODE_PRIVATE);
+        StatusRequest statusRequest = new StatusRequest();
+        statusRequest.setStatus(status);
+        AccountConstants.APP_NOTE_URL_TOKEN = AccountConstants.APP_NOTE_URL + "/api/status?token=" + shared_pref_login.getString(AccountConstants.JWT_ACCESS_TOKEN, "");
 
         ApiInterface apiService = null;
         try {
             apiService = ApiClient
-                    .getClient()
+                    .getClientToken()
                     .create(ApiInterface.class);
-            //apiService.statusStore(shared_pref_otp.getString("",""));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
 
-        Call<LoginResponse> call = apiService.authLogin(loginRequest);
-        call.enqueue(new Callback<LoginResponse>() {
+        Call<StatusResponse> call = apiService.statusGet(statusRequest);
+        call.enqueue(new Callback<StatusResponse>() {
             @Override
-            public void onResponse(Call<LoginResponse> call, retrofit2.Response<LoginResponse> response) {
+            public void onResponse(Call<StatusResponse> call, retrofit2.Response<StatusResponse> response) {
                 if (response.isSuccessful()) {
-                    LoginResponse loginResponse = response.body();
-                    jwt_token = loginResponse.getToken();
-                    //sharedPrefSetter(context, access_token);
-                    callieSharedPreferences.login(context, jwt_token);
+                    StatusResponse statusResponse = response.body();
+                    Log.d(TAG, "onResponse: status" + statusResponse.getStatus_code());
                 } else {
-                    // parse the response body …
                     ApiError error;
                     try {
-                        //getToken();
                         error = ErrorUtils.parseError(response);
                         Log.d("error message", error.message());
                     } catch (IOException e) {
@@ -87,7 +80,7 @@ public class Status {
             }
 
             @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
+            public void onFailure(Call<StatusResponse> call, Throwable t) {
                 Log.e("on failure", t.toString());
             }
         });

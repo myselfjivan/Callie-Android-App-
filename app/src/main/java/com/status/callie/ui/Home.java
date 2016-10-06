@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.status.callie.Model.AccessToken;
+import com.status.callie.Model.Status;
 import com.status.callie.R;
 
 /**
@@ -18,10 +19,12 @@ public class Home extends Activity {
     AccessToken accessToken = new AccessToken(Home.this);
     Button setStatusButton;
     EditText setStatusEditText;
-    String status;
+    String textStatus;
+    Status status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        status = new Status();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         setStatusButton = (Button) findViewById(R.id.set_status_button);
@@ -30,9 +33,8 @@ public class Home extends Activity {
         setStatusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                status = setStatusEditText.getText().toString();
-
-
+                textStatus = setStatusEditText.getText().toString();
+                status.setStatus(textStatus);
             }
         });
     }

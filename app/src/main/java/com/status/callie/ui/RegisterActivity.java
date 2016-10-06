@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.hbb20.CountryCodePicker;
+import com.status.callie.Model.AccessToken;
 import com.status.callie.Model.Register;
 import com.status.callie.Model.Request.PregisterRequest;
 import com.status.callie.Model.Response.PregisterResponse;
@@ -41,6 +42,7 @@ public class RegisterActivity extends Activity {
     private SharedPreferences shared_pref_oauth2;
     CallieSharedPreferences callieSharedPreferences;
     String status_code;
+    AccessToken accessTokenObj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class RegisterActivity extends Activity {
         register = new Register();
         shared_pref_oauth2 = getPreferences(0);
         callieSharedPreferences = new CallieSharedPreferences();
+        accessTokenObj = new AccessToken(RegisterActivity.this);
 
 
         btnRegister = (Button) findViewById(R.id.btn_register);
@@ -98,6 +101,7 @@ public class RegisterActivity extends Activity {
                 Toast.makeText(getApplicationContext(),
                         "Something went wrong, try again?", Toast.LENGTH_LONG)
                         .show();
+                accessTokenObj.tokenCheck();
                 break;
 
         }
@@ -110,7 +114,7 @@ public class RegisterActivity extends Activity {
         super.onBackPressed();
     }
 
-    public String Pregister(String accessToken, final String country_code, final String mobile) {
+    public String Pregister(final String accessToken, final String country_code, final String mobile) {
         PregisterRequest pregisterRequest = new PregisterRequest();
         pregisterRequest.setAccessToken(accessToken);
         pregisterRequest.setCountry_code(country_code);

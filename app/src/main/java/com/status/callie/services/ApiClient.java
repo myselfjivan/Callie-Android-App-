@@ -17,6 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
 
     public static final String BASE_URL = AccountConstants.APP_NOTE_URL;
+    public static final String BASE_URL_TOKEN = AccountConstants.APP_NOTE_URL_TOKEN;
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() throws IOException {
@@ -26,6 +27,20 @@ public class ApiClient {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
+                    .client(client)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return retrofit;
+    }
+
+    public static Retrofit getClientToken() throws IOException {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL_TOKEN)
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();

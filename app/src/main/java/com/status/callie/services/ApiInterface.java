@@ -38,9 +38,9 @@ public interface ApiInterface {
     @POST("auth/login")
     Call<LoginResponse> authLogin(@Body LoginRequest loginRequest);
 
-    @POST("status/store?token={token}")
+    @POST("")
     Call<StatusResponse> statusStore(@Body StatusRequest statusRequest, @Url String token);
 
-    @GET("status?token={token}")
-    Call<StatusResponse> statusGet(@Body StatusRequest statusRequest, @Url String token);
+    @GET("")
+    Call<StatusResponse> statusGet(@Body StatusRequest statusRequest);
 }
