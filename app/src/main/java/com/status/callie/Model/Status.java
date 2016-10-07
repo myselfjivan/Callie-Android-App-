@@ -26,41 +26,33 @@ import retrofit2.Callback;
  */
 public class Status {
 
-    private Context context;
 
     public String TAG = "Token Genration";
-    String access_token;
-    String jwt_token;
-    String token_type;
-    String expires_in;
-    String refresh_token;
+    private Context context;
 
     private SharedPreferences shared_pref_login;
-    private SharedPreferences shared_pref_token;
-    CallieSharedPreferences callieSharedPreferences = new CallieSharedPreferences();
 
-    public Status() {
+    public Status(Context context) {
         this.context = context;
     }
 
 
-    public String setStatus(String status) {
+    public String statusStore(String status) {
         shared_pref_login = context.getSharedPreferences(AccountConstants.SHARED_PREF_LOGIN, Context.MODE_PRIVATE);
         StatusRequest statusRequest = new StatusRequest();
         statusRequest.setStatus(status);
-        AccountConstants.APP_NOTE_URL_TOKEN = AccountConstants.APP_NOTE_URL + "/api/status?token=" + shared_pref_login.getString(AccountConstants.JWT_ACCESS_TOKEN, "");
 
         ApiInterface apiService = null;
         try {
             apiService = ApiClient
-                    .getClientToken()
+                    .getClient()
                     .create(ApiInterface.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
-        Call<StatusResponse> call = apiService.statusGet(statusRequest);
+        Log.d(TAG, "statusStore: jwtToken" + shared_pref_login.getString(AccountConstants.JWT_ACCESS_TOKEN, ""));
+        Call<StatusResponse> call = apiService.statusStore(statusRequest, shared_pref_login.getString(AccountConstants.JWT_ACCESS_TOKEN, ""));
         call.enqueue(new Callback<StatusResponse>() {
             @Override
             public void onResponse(Call<StatusResponse> call, retrofit2.Response<StatusResponse> response) {

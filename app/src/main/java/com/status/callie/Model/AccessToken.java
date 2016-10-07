@@ -34,7 +34,9 @@ public class AccessToken {
 
     private SharedPreferences shared_pref_otp;
     private SharedPreferences shared_pref_token;
+    private SharedPreferences shared_pref_login;
     CallieSharedPreferences callieSharedPreferences = new CallieSharedPreferences();
+    AccessToken accessToken;
 
     private Context context;
 
@@ -46,7 +48,7 @@ public class AccessToken {
         shared_pref_otp = context.getSharedPreferences(AccountConstants.SHARED_PREF_OAUTH2, Context.MODE_PRIVATE);
         if (shared_pref_otp.getString(AccountConstants.ACCESS_TOKEN, "") != null) {
 
-            //getRefreshToken();
+            getRefreshToken();
         } else {
             getToken();
         }
@@ -80,6 +82,7 @@ public class AccessToken {
                     refresh_token = tokenResponse.getRefreshToken();
                     token_type = tokenResponse.getTokenType();
                     callieSharedPreferences.oauth2(context, access_token, token_type, expires_in, refresh_token);
+                    checkJwtLogin();
                 } else {
                     // parse the response body …
                     ApiError error;
@@ -129,6 +132,7 @@ public class AccessToken {
                     refresh_token = tokenResponse.getRefreshToken();
                     token_type = tokenResponse.getTokenType();
                     callieSharedPreferences.oauth2(context, access_token, token_type, expires_in, refresh_token);
+                    checkJwtLogin();
                 } else {
                     // parse the response body …
                     ApiError error;
@@ -197,6 +201,20 @@ public class AccessToken {
                 Log.e("on failure", t.toString());
             }
         });
+        return null;
+    }
+
+    public String checkJwtLogin() {
+        Log.d(TAG, "checkJwtLogin: calling checkJwtLogin...");
+        accessToken = new AccessToken(context);
+        shared_pref_otp = context.getSharedPreferences(AccountConstants.SHARED_PREF_OTP, Context.MODE_PRIVATE);
+        switch (shared_pref_otp.getString(AccountConstants.IS_LOGGED_IN, "")) {
+            case "true":
+                accessToken.jwtToken();
+                break;
+            default:
+                Log.d(TAG, "checkJwtLogin: is_not_logged_in");
+        }
         return null;
     }
 

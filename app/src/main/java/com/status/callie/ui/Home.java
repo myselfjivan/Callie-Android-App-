@@ -24,7 +24,7 @@ public class Home extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        status = new Status();
+        status = new Status(Home.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         setStatusButton = (Button) findViewById(R.id.set_status_button);
@@ -34,7 +34,7 @@ public class Home extends Activity {
             @Override
             public void onClick(View v) {
                 textStatus = setStatusEditText.getText().toString();
-                status.setStatus(textStatus);
+                status.statusStore(textStatus);
             }
         });
     }

@@ -19,6 +19,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 public interface ApiInterface {
@@ -38,9 +39,9 @@ public interface ApiInterface {
     @POST("auth/login")
     Call<LoginResponse> authLogin(@Body LoginRequest loginRequest);
 
-    @POST("")
-    Call<StatusResponse> statusStore(@Body StatusRequest statusRequest, @Url String token);
+    @POST("status/store")
+    Call<StatusResponse> statusStore(@Body StatusRequest statusRequest, @Query("token") String token);
 
-    @GET("")
-    Call<StatusResponse> statusGet(@Body StatusRequest statusRequest);
+    @GET("status}")
+    Call<StatusResponse> statusGet(@Body StatusRequest statusRequest, @Query("token") String token);
 }
