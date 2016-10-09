@@ -2,9 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1">
 
     <RelativeLayout
+        android:id="@+id/status_text"
         android:layout_width="match_parent"
         android:layout_height="93dp"></RelativeLayout>
 
@@ -18,17 +20,31 @@
             android:id="@+id/set_status_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true" />
+
+        <Button
+            android:id="@+id/set_status_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/set_status_edit_text"
+            android:text="Update" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="103dp">
+        android:layout_height="31dp"
+        android:layout_weight="0.05">
 
-        <Button
-            android:id="@+id/set_status_button"
+        <TextView
+            android:id="@+id/status_last"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -37,6 +53,22 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:text="Update" />
+            android:layout_alignWithParentIfMissing="false"
+            android:text="Last Status"
+            android:textAlignment="center"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
     </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/my_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical" />
+    </RelativeLayout>
+
+
 </LinearLayout>

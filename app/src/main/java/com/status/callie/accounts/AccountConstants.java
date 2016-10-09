@@ -6,11 +6,6 @@ package com.status.callie.accounts;
 public class AccountConstants {
     public static String APP_NOTE_URL = "https://gharkaamdone.com/api/";
 
-    public static String JWT_ACCESS_TOKEN = "jwt_token";
-
-    //base url with token
-    public static String APP_NOTE_URL_TOKEN;
-
     //user statuses
     public static final String SUCCESS = "success";
     public static final String FAILURE = "failure";
@@ -18,12 +13,10 @@ public class AccountConstants {
     public static String IS_VERIFIED = "is_verified";
 
     //otp
-
     public static String SHARED_PREF_OTP = "com.callie.status.otp";
     public static String MOBILE = "mobile";
     public static String COUNTRY_CODE = "country_code";
     public static String OTP = "otp";
-
 
     //oauth2 token
     public static String SHARED_PREF_OAUTH2 = "com.callie.status.token";

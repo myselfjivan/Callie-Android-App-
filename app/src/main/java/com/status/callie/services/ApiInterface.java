@@ -9,6 +9,7 @@ import com.status.callie.Model.Request.PregisterRequest;
 import com.status.callie.Model.Request.PverifyRequest;
 import com.status.callie.Model.Request.StatusRequest;
 import com.status.callie.Model.Request.TokenRequest;
+import com.status.callie.Model.Response.GetLast10Status;
 import com.status.callie.Model.Response.LoginResponse;
 import com.status.callie.Model.Response.PregisterResponse;
 import com.status.callie.Model.Response.PverifyResponse;
@@ -20,7 +21,6 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
-import retrofit2.http.Url;
 
 public interface ApiInterface {
 
@@ -40,8 +40,11 @@ public interface ApiInterface {
     Call<LoginResponse> authLogin(@Body LoginRequest loginRequest);
 
     @POST("status/store")
-    Call<StatusResponse> statusStore(@Body StatusRequest statusRequest, @Query("token") String token);
+    Call<StatusResponse> storeStatus(@Body StatusRequest statusRequest, @Query("token") String token);
 
-    @GET("status}")
-    Call<StatusResponse> statusGet(@Body StatusRequest statusRequest, @Query("token") String token);
+    @GET("status/}")
+    Call<GetLast10Status> getStatus(@Query("token") String token);
+
+    @GET("status/last10}")
+    Call<GetLast10Status> getLast10Status(@Query("token") String token);
 }

@@ -45,6 +45,7 @@ public class AccessToken {
     }
 
     public String tokenCheck() {
+        Log.d(TAG, "tokenCheck: checking token");
         shared_pref_otp = context.getSharedPreferences(AccountConstants.SHARED_PREF_OAUTH2, Context.MODE_PRIVATE);
         if (shared_pref_otp.getString(AccountConstants.ACCESS_TOKEN, "") != null) {
 

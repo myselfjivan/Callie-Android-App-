@@ -12,9 +12,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.status.callie.Model.AccessToken;
 import com.status.callie.Model.SqliteHelper;
@@ -22,8 +22,6 @@ import com.status.callie.accounts.AccountConstants;
 import com.status.callie.services.MyAlarmReceiver;
 import com.status.callie.services.ServiceCallie;
 import com.status.callie.services.SessionManager;
-import com.status.callie.ui.Home;
-import com.status.callie.ui.RegisterActivity;
 
 
 public class Callie extends AppCompatActivity
@@ -117,6 +115,7 @@ public class Callie extends AppCompatActivity
 
     // Setup a recurring alarm every half hour
     public void scheduleAlarm() {
+        Log.d(TAG, "scheduleAlarm: calling alarm");
         // Construct an intent that will execute the AlarmReceiver
         Intent intent = new Intent(getApplicationContext(), MyAlarmReceiver.class);
         // Create a PendingIntent to be triggered when the alarm goes off

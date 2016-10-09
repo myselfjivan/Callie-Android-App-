@@ -4,16 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.status.callie.Model.Request.LoginRequest;
 import com.status.callie.Model.Request.StatusRequest;
-import com.status.callie.Model.Response.LoginResponse;
+import com.status.callie.Model.Response.GetLast10Status;
 import com.status.callie.Model.Response.StatusResponse;
-import com.status.callie.System.GetMacAddress;
 import com.status.callie.accounts.AccountConstants;
 import com.status.callie.services.ApiClient;
 import com.status.callie.services.ApiError;
 import com.status.callie.services.ApiInterface;
-import com.status.callie.services.CallieSharedPreferences;
 import com.status.callie.services.ErrorUtils;
 
 import java.io.IOException;
@@ -37,7 +34,7 @@ public class Status {
     }
 
 
-    public String statusStore(String status) {
+    public String statusStore(String status, String token) {
         shared_pref_login = context.getSharedPreferences(AccountConstants.SHARED_PREF_LOGIN, Context.MODE_PRIVATE);
         StatusRequest statusRequest = new StatusRequest();
         statusRequest.setStatus(status);
@@ -51,8 +48,8 @@ public class Status {
             e.printStackTrace();
         }
 
-        Log.d(TAG, "statusStore: jwtToken" + shared_pref_login.getString(AccountConstants.JWT_ACCESS_TOKEN, ""));
-        Call<StatusResponse> call = apiService.statusStore(statusRequest, shared_pref_login.getString(AccountConstants.JWT_ACCESS_TOKEN, ""));
+        Log.d(TAG, "statusStore: jwt Token" + token);
+        Call<StatusResponse> call = apiService.storeStatus(statusRequest, token);
         call.enqueue(new Callback<StatusResponse>() {
             @Override
             public void onResponse(Call<StatusResponse> call, retrofit2.Response<StatusResponse> response) {
@@ -73,6 +70,44 @@ public class Status {
 
             @Override
             public void onFailure(Call<StatusResponse> call, Throwable t) {
+                Log.e("on failure", t.toString());
+            }
+        });
+        return null;
+    }
+
+    public String getStatus(String token) {
+        ApiInterface apiService = null;
+        try {
+            apiService = ApiClient
+                    .getClient()
+                    .create(ApiInterface.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Log.d(TAG, "statusStore: jwt Token" + token);
+        Call<GetLast10Status> call = apiService.getStatus(token);
+        call.enqueue(new Callback<GetLast10Status>() {
+            @Override
+            public void onResponse(Call<GetLast10Status> call, retrofit2.Response<GetLast10Status> response) {
+                if (response.isSuccessful()) {
+                    GetLast10Status getLast10Status = response.body();
+                    Log.d(TAG, "onResponse: status" + getLast10Status.getStatus());
+                } else {
+                    ApiError error;
+                    try {
+                        error = ErrorUtils.parseError(response);
+                        Log.d("error message", error.message());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<GetLast10Status> call, Throwable t) {
                 Log.e("on failure", t.toString());
             }
         });
