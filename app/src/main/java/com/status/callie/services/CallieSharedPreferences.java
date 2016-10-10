@@ -26,7 +26,7 @@ public class CallieSharedPreferences {
         return null;
     }
 
-    public String oauth2(Context context, String access_token, String token_type, String expires_in, String refresh_token) {
+    public String oauth2(Context context, String access_token, String token_type, String expires_in, String refresh_token, Long date) {
         Log.d(TAG, "sharedPrefSetter: I am not getting called");
         shared_pref_otp = context.getSharedPreferences(AccountConstants.SHARED_PREF_OAUTH2, Context.MODE_PRIVATE);
         editor = shared_pref_otp.edit();
@@ -34,6 +34,7 @@ public class CallieSharedPreferences {
         editor.putString(AccountConstants.TOKEN_TYPE, token_type);
         editor.putString(AccountConstants.EXPIRES_IN, expires_in);
         editor.putString(AccountConstants.REFRESH_TOKEN, refresh_token);
+        editor.putLong(AccountConstants.CRAETION_DATE_TIME, date);
         editor.commit();
         return null;
     }

@@ -17,6 +17,7 @@ import com.status.callie.services.CallieSharedPreferences;
 import com.status.callie.services.ErrorUtils;
 
 import java.io.IOException;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,6 +38,8 @@ public class AccessToken {
     private SharedPreferences shared_pref_login;
     CallieSharedPreferences callieSharedPreferences = new CallieSharedPreferences();
     AccessToken accessToken;
+    Date date = new Date(System.currentTimeMillis());
+    Long date_time;
 
     private Context context;
 
@@ -46,10 +49,15 @@ public class AccessToken {
 
     public String tokenCheck() {
         Log.d(TAG, "tokenCheck: checking token");
-        shared_pref_otp = context.getSharedPreferences(AccountConstants.SHARED_PREF_OAUTH2, Context.MODE_PRIVATE);
-        if (shared_pref_otp.getString(AccountConstants.ACCESS_TOKEN, "") != null) {
-
-            getRefreshToken();
+        shared_pref_token = context.getSharedPreferences(AccountConstants.SHARED_PREF_OAUTH2, Context.MODE_PRIVATE);
+        if (shared_pref_token.getString(AccountConstants.ACCESS_TOKEN, "") != null) {
+            if ((date.getTime() - shared_pref_token.getLong(AccountConstants.CRAETION_DATE_TIME, 0)) >
+                    (Integer.valueOf(shared_pref_token.getString(AccountConstants.EXPIRES_IN, "")) * 60)) {
+                getRefreshToken();
+            } else {
+                Log.d(TAG, "tokenCheck: No need to get new token");
+                checkJwtLogin();
+            }
         } else {
             getToken();
         }
@@ -82,7 +90,8 @@ public class AccessToken {
                     expires_in = tokenResponse.getExpiresIn();
                     refresh_token = tokenResponse.getRefreshToken();
                     token_type = tokenResponse.getTokenType();
-                    callieSharedPreferences.oauth2(context, access_token, token_type, expires_in, refresh_token);
+                    date_time = date.getTime();
+                    callieSharedPreferences.oauth2(context, access_token, token_type, expires_in, refresh_token, date_time);
                     checkJwtLogin();
                 } else {
                     // parse the response body …
@@ -132,7 +141,8 @@ public class AccessToken {
                     expires_in = tokenResponse.getExpiresIn();
                     refresh_token = tokenResponse.getRefreshToken();
                     token_type = tokenResponse.getTokenType();
-                    callieSharedPreferences.oauth2(context, access_token, token_type, expires_in, refresh_token);
+                    date_time = date.getTime();
+                    callieSharedPreferences.oauth2(context, access_token, token_type, expires_in, refresh_token, date_time);
                     checkJwtLogin();
                 } else {
                     // parse the response body …
