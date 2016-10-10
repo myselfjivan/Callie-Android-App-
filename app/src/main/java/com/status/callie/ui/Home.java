@@ -19,6 +19,7 @@ import com.status.callie.accounts.AccountConstants;
  */
 public class Home extends Activity {
     Button setStatusButton;
+    Button getSetStatusButton;
     EditText setStatusEditText;
     String textStatus;
     Status status;
@@ -31,15 +32,24 @@ public class Home extends Activity {
         setContentView(R.layout.activity_home);
         shared_pref_login = this.getSharedPreferences(AccountConstants.SHARED_PREF_LOGIN, Context.MODE_PRIVATE);
         setStatusButton = (Button) findViewById(R.id.set_status_button);
+        getSetStatusButton = (Button) findViewById(R.id.status_get);
         setStatusEditText = (EditText) findViewById(R.id.set_status_edit_text);
         setStatusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 textStatus = setStatusEditText.getText().toString();
                 status.statusStore(textStatus, shared_pref_login.getString(AccountConstants.TOKEN, ""));
+
             }
         });
-        status.getStatus(shared_pref_login.getString(AccountConstants.TOKEN, ""));
+
+        getSetStatusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                status.getStatus(shared_pref_login.getString(AccountConstants.TOKEN, ""));
+            }
+        });
+
 
     }
 

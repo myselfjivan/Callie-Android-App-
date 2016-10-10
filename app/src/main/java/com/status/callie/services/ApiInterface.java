@@ -42,9 +42,9 @@ public interface ApiInterface {
     @POST("status/store")
     Call<StatusResponse> storeStatus(@Body StatusRequest statusRequest, @Query("token") String token);
 
-    @GET("status/}")
+    @GET("status")
     Call<GetLast10Status> getStatus(@Query("token") String token);
 
-    @GET("status/last10}")
+    @GET("status/last10")
     Call<GetLast10Status> getLast10Status(@Query("token") String token);
 }

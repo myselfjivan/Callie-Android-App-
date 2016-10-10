@@ -36,6 +36,7 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/set_status_edit_text"
             android:text="Update" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -43,31 +44,22 @@
         android:layout_height="31dp"
         android:layout_weight="0.05">
 
-        <TextView
-            android:id="@+id/status_last"
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:text="Get Status"
+            android:id="@+id/status_get"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignWithParentIfMissing="false"
-            android:text="Last Status"
-            android:textAlignment="center"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:layout_alignParentStart="true" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/my_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical" />
     </RelativeLayout>
 
 
