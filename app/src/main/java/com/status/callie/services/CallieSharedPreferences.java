@@ -39,10 +39,12 @@ public class CallieSharedPreferences {
         return null;
     }
 
-    public String login(Context context, String token) {
+    public String login(Context context, String token,String expires_in, Long date) {
         shared_pref_otp = context.getSharedPreferences(AccountConstants.SHARED_PREF_LOGIN, Context.MODE_PRIVATE);
         editor = shared_pref_otp.edit();
         editor.putString(AccountConstants.TOKEN, token);
+        editor.putString(AccountConstants.EXPIRES_IN, expires_in);
+        editor.putLong(AccountConstants.CRAETION_DATE_TIME, date);
         editor.commit();
         return null;
     }

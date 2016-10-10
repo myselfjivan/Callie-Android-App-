@@ -7,16 +7,9 @@ import com.google.gson.annotations.SerializedName;
  * Created by jivan.ghadage on 8/26/2016.
  */
 public class PregisterRequest {
-    public String getAccessToken() {
-        return accessToken;
-    }
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
-    }
-
-    public String getCountry_code() {
-        return country_code;
     }
 
     public void setCountry_code(String country_code) {

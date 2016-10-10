@@ -11,10 +11,6 @@ public class StatusRequest {
         this.status = status;
     }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
-
     @SerializedName("status")
     @Expose
     private String status;

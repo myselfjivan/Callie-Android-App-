@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.hbb20.CountryCodePicker;
 import com.status.callie.Model.AccessToken;
-import com.status.callie.Model.Register;
 import com.status.callie.Model.Request.PregisterRequest;
 import com.status.callie.Model.Response.PregisterResponse;
 import com.status.callie.R;
@@ -37,7 +36,6 @@ public class RegisterActivity extends Activity {
     private Button btnRegister;
     private EditText inputMobileEditText;
     private String countryCode;
-    Register register;
     CountryCodePicker ccp;
     private SharedPreferences shared_pref_oauth2;
     CallieSharedPreferences callieSharedPreferences;
@@ -48,7 +46,6 @@ public class RegisterActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pregister);
-        register = new Register();
         shared_pref_oauth2 = getPreferences(0);
         callieSharedPreferences = new CallieSharedPreferences();
         accessTokenObj = new AccessToken(RegisterActivity.this);
@@ -59,7 +56,6 @@ public class RegisterActivity extends Activity {
         ccp = (CountryCodePicker) findViewById(R.id.ccp);
         countryCode = ccp.getSelectedCountryCodeWithPlus();
 
-        // PregisterRequest Button Click event
         btnRegister.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {

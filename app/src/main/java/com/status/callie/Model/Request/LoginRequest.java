@@ -7,10 +7,6 @@ import com.google.gson.annotations.SerializedName;
  * Created by jivan.ghadage on 9/29/2016.
  */
 public class LoginRequest {
-    public String getAccessToken() {
-        return accessToken;
-    }
-
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
@@ -21,10 +17,6 @@ public class LoginRequest {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public void setPassword(String password) {

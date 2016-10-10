@@ -11,11 +11,15 @@ public class LoginResponse {
         return token;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public String getExpires_in() {
+        return expires_in;
     }
 
     @SerializedName("token")
     @Expose
     private String token;
+
+    @SerializedName("expires_in")
+    @Expose
+    private String expires_in;
 }

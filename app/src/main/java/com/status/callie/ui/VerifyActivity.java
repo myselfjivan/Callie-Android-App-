@@ -133,9 +133,9 @@ public class VerifyActivity extends Activity {
     public String verified(String statusCode, String mobile, String country_code, String otp) {
         switch (statusCode) {
             case "1":
-                accessToken.jwtToken();
                 callieSharedPreferences.otp(VerifyActivity.this, "true", "true", mobile, country_code, otp);
                 Intent intent = new Intent(VerifyActivity.this, Home.class);
+                accessToken.jwtToken();
                 startActivity(intent);
                 break;
             case "0":

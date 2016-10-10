@@ -20,27 +20,6 @@ public class GetLast10Status {
         return mobile;
     }
 
-    public String getCreated_at() {
-        return created_at;
-    }
-
-    public String getUpdated_at() {
-        return updated_at;
-    }
-
-
-    public String getTimezone_type() {
-        return timezone_type;
-    }
-
-    public String getTimezone() {
-        return timezone;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
     @SerializedName("id")
     @Expose
     private String id;

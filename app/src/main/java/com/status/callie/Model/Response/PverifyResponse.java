@@ -15,14 +15,6 @@ public class PverifyResponse {
         return status_code;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public void setStatus_code(String status_code) {
-        this.status_code = status_code;
-    }
-
     @SerializedName("message")
     @Expose
     private String message;

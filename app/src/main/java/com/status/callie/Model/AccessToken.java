@@ -52,7 +52,7 @@ public class AccessToken {
         shared_pref_token = context.getSharedPreferences(AccountConstants.SHARED_PREF_OAUTH2, Context.MODE_PRIVATE);
         if (shared_pref_token.getString(AccountConstants.ACCESS_TOKEN, "") != null) {
             if ((date.getTime() - shared_pref_token.getLong(AccountConstants.CRAETION_DATE_TIME, 0)) >
-                    (Integer.valueOf(shared_pref_token.getString(AccountConstants.EXPIRES_IN, "")) * 60)) {
+                    (Integer.valueOf(shared_pref_token.getString(AccountConstants.EXPIRES_IN, "0"))) * 60) {
                 getRefreshToken();
             } else {
                 Log.d(TAG, "tokenCheck: No need to get new token");
@@ -191,13 +191,12 @@ public class AccessToken {
                 if (response.isSuccessful()) {
                     LoginResponse loginResponse = response.body();
                     jwt_token = loginResponse.getToken();
-                    //sharedPrefSetter(context, access_token);
-                    callieSharedPreferences.login(context, jwt_token);
+                    expires_in = loginResponse.getExpires_in();
+                    date_time = date.getTime();
+                    callieSharedPreferences.login(context, jwt_token, expires_in, date_time);
                 } else {
-                    // parse the response body …
                     ApiError error;
                     try {
-                        //getToken();
                         error = ErrorUtils.parseError(response);
                         Log.d("error message", error.message());
                     } catch (IOException e) {
@@ -219,9 +218,16 @@ public class AccessToken {
         Log.d(TAG, "checkJwtLogin: calling checkJwtLogin...");
         accessToken = new AccessToken(context);
         shared_pref_otp = context.getSharedPreferences(AccountConstants.SHARED_PREF_OTP, Context.MODE_PRIVATE);
+        shared_pref_login = context.getSharedPreferences(AccountConstants.SHARED_PREF_LOGIN, Context.MODE_PRIVATE);
         switch (shared_pref_otp.getString(AccountConstants.IS_LOGGED_IN, "")) {
             case "true":
-                accessToken.jwtToken();
+                Log.d(TAG, "time difference: " + (date.getTime() - shared_pref_login.getLong(AccountConstants.CRAETION_DATE_TIME, 0)));
+                if ((date.getTime() - shared_pref_login.getLong(AccountConstants.CRAETION_DATE_TIME, 0)) >
+                        (Integer.valueOf(shared_pref_login.getString(AccountConstants.EXPIRES_IN, "0"))) * 3600) {
+                    accessToken.jwtToken();
+                } else {
+                    Log.d(TAG, "jwtTokenCheck: No need to get new token");
+                }
                 break;
             default:
                 Log.d(TAG, "checkJwtLogin: is_not_logged_in");
