@@ -108,6 +108,7 @@ public class AccessToken {
 
             @Override
             public void onFailure(Call<TokenResponse> call, Throwable t) {
+                tokenCheck();
                 Log.e("on failure", t.toString());
             }
         });
@@ -160,6 +161,7 @@ public class AccessToken {
 
             @Override
             public void onFailure(Call<TokenResponse> call, Throwable t) {
+                tokenCheck();
                 Log.e("on failure", t.toString());
             }
         });
@@ -208,6 +210,7 @@ public class AccessToken {
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
+                tokenCheck();
                 Log.e("on failure", t.toString());
             }
         });
