@@ -29,56 +29,19 @@ import java.util.List;
  * Created by jivan.ghadage on 9/6/2016.
  */
 public class Home extends AppCompatActivity {
-    Button setStatusButton;
-    Button getSetStatusButton;
-    EditText setStatusEditText;
-    String textStatus;
-    Status status;
-    private SharedPreferences shared_pref_login;
 
-    private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        status = new Status(Home.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-//        toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-
-        shared_pref_login = this.getSharedPreferences(AccountConstants.SHARED_PREF_LOGIN, Context.MODE_PRIVATE);
-
-//        setStatusButton = (Button) findViewById(R.id.set_status_button);
-//        getSetStatusButton = (Button) findViewById(R.id.status_get);
-//        setStatusEditText = (EditText) findViewById(R.id.set_status_edit_text);
-//        setStatusButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                textStatus = setStatusEditText.getText().toString();
-//                status.statusStore(textStatus, shared_pref_login.getString(AccountConstants.TOKEN, ""));
-//
-//            }
-//        });
-//
-//        getSetStatusButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                status.getStatus(shared_pref_login.getString(AccountConstants.TOKEN, ""));
-//            }
-//        });
-
-
     }
 
     private Boolean exit = false;
