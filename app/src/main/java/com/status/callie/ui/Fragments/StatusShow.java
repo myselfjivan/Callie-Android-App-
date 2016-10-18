@@ -14,7 +14,6 @@ import android.widget.EditText;
 import com.status.callie.Model.Status;
 import com.status.callie.R;
 import com.status.callie.accounts.AccountConstants;
-import com.status.callie.ui.Home;
 
 /**
  * Created by om on 16/10/16.
@@ -46,7 +45,7 @@ public class StatusShow extends Fragment implements View.OnClickListener {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.status_show, container, false);
+        view = inflater.inflate(R.layout.fragment_status_show, container, false);
         setStatusButton = (Button) view.findViewById(R.id.set_status_button);
         getSetStatusButton = (Button) view.findViewById(R.id.status_get);
         setStatusEditText = (EditText) view.findViewById(R.id.set_status_edit_text);
