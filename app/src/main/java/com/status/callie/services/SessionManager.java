@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.status.callie.Model.AccessToken;
+import com.status.callie.model.AccessToken;
 import com.status.callie.accounts.AccountConstants;
 import com.status.callie.ui.Home;
 import com.status.callie.ui.RegisterActivity;

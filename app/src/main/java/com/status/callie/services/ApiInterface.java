@@ -4,17 +4,17 @@ package com.status.callie.services;
  * Created by jivan.ghadage on 8/23/2016.
  */
 
-import com.status.callie.Model.Request.LoginRequest;
-import com.status.callie.Model.Request.PregisterRequest;
-import com.status.callie.Model.Request.PverifyRequest;
-import com.status.callie.Model.Request.StatusRequest;
-import com.status.callie.Model.Request.TokenRequest;
-import com.status.callie.Model.Response.GetLast10Status;
-import com.status.callie.Model.Response.LoginResponse;
-import com.status.callie.Model.Response.PregisterResponse;
-import com.status.callie.Model.Response.PverifyResponse;
-import com.status.callie.Model.Response.StatusResponse;
-import com.status.callie.Model.Response.TokenResponse;
+import com.status.callie.model.Request.LoginRequest;
+import com.status.callie.model.Request.PregisterRequest;
+import com.status.callie.model.Request.PverifyRequest;
+import com.status.callie.model.Request.StatusRequest;
+import com.status.callie.model.Request.TokenRequest;
+import com.status.callie.model.Response.GetLast10Status;
+import com.status.callie.model.Response.LoginResponse;
+import com.status.callie.model.Response.PregisterResponse;
+import com.status.callie.model.Response.PverifyResponse;
+import com.status.callie.model.Response.StatusResponse;
+import com.status.callie.model.Response.TokenResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

@@ -1,12 +1,8 @@
 package com.status.callie.services;
 
-import android.app.*;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-
-import com.status.callie.Callie;
-import com.status.callie.Model.AccessToken;
 
 /**
  * Created by jivan.ghadage on 9/27/2016.

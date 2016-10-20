@@ -11,11 +11,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.status.callie.Model.AccessToken;
-import com.status.callie.Model.Request.PverifyRequest;
-import com.status.callie.Model.Response.PverifyResponse;
+import com.status.callie.model.AccessToken;
+import com.status.callie.model.Request.PverifyRequest;
+import com.status.callie.model.Response.PverifyResponse;
 import com.status.callie.R;
-import com.status.callie.System.GetMacAddress;
+import com.status.callie.system.GetMacAddress;
 import com.status.callie.accounts.AccountConstants;
 import com.status.callie.services.ApiClient;
 import com.status.callie.services.ApiError;

@@ -16,8 +16,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.status.callie.Model.AccessToken;
-import com.status.callie.Model.SqliteHelper;
+import com.status.callie.model.AccessToken;
+import com.status.callie.model.SqliteHelper;
 import com.status.callie.accounts.AccountConstants;
 import com.status.callie.services.MyAlarmReceiver;
 import com.status.callie.services.ServiceCallie;

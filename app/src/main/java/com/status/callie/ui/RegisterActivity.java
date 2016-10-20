@@ -12,9 +12,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.hbb20.CountryCodePicker;
-import com.status.callie.Model.AccessToken;
-import com.status.callie.Model.Request.PregisterRequest;
-import com.status.callie.Model.Response.PregisterResponse;
+import com.status.callie.model.AccessToken;
+import com.status.callie.model.Request.PregisterRequest;
+import com.status.callie.model.Response.PregisterResponse;
 import com.status.callie.R;
 import com.status.callie.accounts.AccountConstants;
 import com.status.callie.services.ApiClient;
