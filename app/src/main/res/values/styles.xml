@@ -35,4 +35,10 @@
         <item name="android:paddingBottom">@dimen/carddemo_keyline_1_minus_8dp</item>
     </style>
 
+    <style name="carddemo_googlenow_main_inner_lastupdate">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:layout_marginLeft">@dimen/card_header_simple_title_margin_left</item>
+    </style>
+
 </resources>

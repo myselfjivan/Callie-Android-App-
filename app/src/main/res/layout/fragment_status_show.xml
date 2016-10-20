@@ -69,13 +69,6 @@
                             android:layout_height="match_parent"
                             android:orientation="vertical">
 
-                            <it.gmariotti.cardslib.library.view.CardViewNative
-                                android:id="@+id/carddemo_weathercard"
-                                style="@style/card_external"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                card:card_layout_resourceID="@layout/native_cardwithlist_layout" />
-
                             <!-- Empty view-->
                             <View
                                 android:layout_width="match_parent"
@@ -83,7 +76,8 @@
 
                             <it.gmariotti.cardslib.library.view.CardViewNative
                                 android:id="@+id/carddemo_stockcard"
-                                style="@style/card_external"
+                                style="
+                                @style/card_external"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 card:card_layout_resourceID="@layout/native_cardwithlist_layout" />

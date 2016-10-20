@@ -24,4 +24,10 @@
     <color name="windowBackground">#FFFFFF</color>
     <color name="navigationBarColor">#000000</color>
 
+    <!-- Stock -->
+    <color name="demo_card_stock_negative">#FF4646</color>
+    <color name="demo_card_stock_positive">#29A426</color>
+
+    <color name="gray_background">#ececec</color>
+
 </resources>

@@ -18,10 +18,9 @@ import com.status.callie.accounts.AccountConstants;
 /**
  * Created by om on 16/10/16.
  */
-public class StatusShow extends Fragment implements View.OnClickListener {
+public abstract class StatusShow extends MaterialV1Fragment  implements View.OnClickListener {
 
     Button setStatusButton;
-    Button getSetStatusButton;
     EditText setStatusEditText;
     String textStatus;
     Status status;
@@ -47,7 +46,6 @@ public class StatusShow extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_status_show, container, false);
         setStatusButton = (Button) view.findViewById(R.id.set_status_button);
-        getSetStatusButton = (Button) view.findViewById(R.id.status_get);
         setStatusEditText = (EditText) view.findViewById(R.id.set_status_edit_text);
         setStatusButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,12 +56,6 @@ public class StatusShow extends Fragment implements View.OnClickListener {
             }
         });
 
-        getSetStatusButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                status.getStatus(shared_pref_login.getString(AccountConstants.TOKEN, ""));
-            }
-        });
         return view;
     }
 
