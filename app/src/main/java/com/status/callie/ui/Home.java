@@ -11,6 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.status.callie.R;
+import com.status.callie.ui.fragments.StatusContacts;
+import com.status.callie.ui.fragments.StatusSearch;
+import com.status.callie.ui.fragments.StatusShow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +60,9 @@ public class Home extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new StatusShow(), "ONE");
+        adapter.addFragment(new StatusSearch(), "TWO");
+        adapter.addFragment(new StatusContacts(), "THREE");
         viewPager.setAdapter(adapter);
     }
 

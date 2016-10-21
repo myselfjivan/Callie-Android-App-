@@ -4,20 +4,22 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.status.callie.model.Status;
 import com.status.callie.R;
 import com.status.callie.accounts.AccountConstants;
+import com.status.callie.model.Status;
+import com.status.callie.ui.cards.StatusCardWithList;
 
 /**
  * Created by om on 16/10/16.
  */
-public abstract class StatusShow extends MaterialV1Fragment  implements View.OnClickListener {
+public class StatusShow extends Fragment implements View.OnClickListener {
 
     Button setStatusButton;
     EditText setStatusEditText;
@@ -26,6 +28,7 @@ public abstract class StatusShow extends MaterialV1Fragment  implements View.OnC
     View view;
     private SharedPreferences shared_pref_login;
     Context context;
+    StatusCardWithList card;// = new StatusCardWithList(context);
 
     public StatusShow() {
 
@@ -46,6 +49,8 @@ public abstract class StatusShow extends MaterialV1Fragment  implements View.OnC
         view = inflater.inflate(R.layout.fragment_status_show, container, false);
         setStatusButton = (Button) view.findViewById(R.id.set_status_button);
         setStatusEditText = (EditText) view.findViewById(R.id.set_status_edit_text);
+        card = new StatusCardWithList(context);
+        card.init();
         setStatusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

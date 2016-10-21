@@ -32,11 +32,11 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.0'
     compile 'com.hbb20:ccp:1.5.1'
 
-    //Core card library
-    compile 'com.github.gabrielemariotti.cards:library:1.9.1'
+    //Core
+    compile 'com.github.gabrielemariotti.cards:cardslib-core:2.1.0'
 
-    //material edit text
-    compile 'com.rengwuxian.materialedittext:library:2.1.4'
+    //Optional for built-in cards
+    compile 'com.github.gabrielemariotti.cards:cardslib-cards:2.1.0'
 
     //Optional for RecyclerView
     compile 'com.github.gabrielemariotti.cards:cardslib-recyclerview:2.1.0'
@@ -46,6 +46,12 @@ dependencies {
 
     //Optional for drag and drop
     compile 'com.github.gabrielemariotti.cards:cardslib-extra-dragdrop:2.1.0'
+
+    //Optional for twoway  (coming soon)
+    //compile 'com.github.gabrielemariotti.cards:cardslib-extra-twoway:2.1.0'
+
+    //material edit text
+    compile 'com.rengwuxian.materialedittext:library:2.1.4'
 
     compile 'com.blunderer:materialdesignlibrary:2.0.4'
 

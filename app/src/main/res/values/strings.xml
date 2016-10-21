@@ -17,4 +17,44 @@
     <string name="name">Fullname</string>
     <string name="user_name">User Name</string>
     <string name="mobile_number">Mobile Number</string>
+
+    <!-- About -->
+    <string name="title_about"><![CDATA[
+        <b>CardLib Extras</b>&nbsp;<font color="#888888">v%1$s</font>
+    ]]></string>
+    <string name="about_ok">OK</string>
+    <string name="about_body"><![CDATA[
+        <b>Library & Demo Extras</b><br>
+        Author: <a href="https://plus.google.com/114432517923423045208">Gabriele Mariotti</a><br>
+        <br>
+        Get: <a href="https://github.com/gabrielemariotti/cardslib">Source and doc</a><br>
+        Get on Google Play: <a href="https://play.google.com/store/apps/details?id=it.gmariotti.cardslib.demo">Cardslib Demo Stock</a><br>
+        <br><br>
+        <b>Many thanks to these open source tools:</b><br>
+        <b><a href="https://github.com/square/picasso">Picasso</a></b><br>
+        <i>by Square, Inc.</i><br><br>
+        <b><a href="https://github.com/koush/ion">Ion</a></b><br>
+        <i>by Koushik Dutta</i><br><br>
+        <b><a href="https://github.com/nostra13/Android-Universal-Image-Loader">Android-Universal-Image-Loader</a></b><br>
+        <i>by Sergey Tarasevich</i><br><br>
+        <b><a href="https://github.com/chrisbanes/ActionBar-PullToRefresh">ActionBar-PullToRefresh</a></b><br>
+        <i>by Chris Banses</i><br><br>
+        <b><a href="https://github.com/square/okhttp">Okhttp</a></b><br>
+        <i>by Square, Inc.</i><br><br>
+        <b><a href="https://github.com/nhaarman/ListViewAnimations">ListViewAnimations</a></b><br>
+        <i>by Niek Haarman</i><br><br>
+        <b><a href="https://github.com/keyboardsurfer/Crouton">Crouton</a></b><br>
+        <i>by Benjamin Weiss</i><br><br>
+        <b><a href="https://github.com/emilsjolander/StickyListHeaders">StickyListHeaders</a></b><br>
+        <i>by Emil Sjölander</i><br><br>
+        <b><a href="https://github.com/etsy/AndroidStaggeredGrid">AndroidStaggeredGrid</a></b><br>
+        <i>by Etsy</i><br><br>
+        <b><a href="https://github.com/survivingwithandroid/WeatherLib">WeatherLib</a></b><br>
+        <i>by Francesco Azzola</i><br><br>
+        <b>Thanks for some ideas and code:</b><br>
+        <b><a href="https://github.com/JakeWharton/u2020">u2020</a></b><br>
+        <i>by JakeWharton</i><br><br>
+        <b>Thanks to <a href="https://plus.google.com/+TaylorLing">Taylor Ling</a> for drag and drop icon.</b>
+        <br>
+    ]]></string>
 </resources>

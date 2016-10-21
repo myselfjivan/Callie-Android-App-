@@ -14,4 +14,5 @@
     <dimen name="custom_tab_layout_height">72dp</dimen>
     <dimen name="carddemo_keyline_1_minus_8dp">8dp</dimen>
     <dimen name="hd_fab_size">52dp</dimen>
+    <dimen name="text_size_medium">14sp</dimen>
 </resources>
