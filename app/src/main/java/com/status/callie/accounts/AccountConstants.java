@@ -4,7 +4,7 @@ package com.status.callie.accounts;
  * Created by om on 7/8/16.
  */
 public class AccountConstants {
-    public static String APP_NOTE_URL = "https://gharkaamdone.com/api/";
+    public static String APP_NOTE_URL = "https://callie.e2ebazzar.com/api/";
 
     //user statuses
     public static final String SUCCESS = "success";

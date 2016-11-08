@@ -60,9 +60,9 @@ public class Home extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new StatusShow(), "ONE");
-        adapter.addFragment(new StatusSearch(), "TWO");
-        adapter.addFragment(new StatusContacts(), "THREE");
+        adapter.addFragment(new StatusShow(), "Show");
+        adapter.addFragment(new StatusSearch(), "Search");
+        adapter.addFragment(new StatusContacts(), "Contacts");
         viewPager.setAdapter(adapter);
     }
 

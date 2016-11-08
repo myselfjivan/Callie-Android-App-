@@ -16,6 +16,8 @@ import com.status.callie.accounts.AccountConstants;
 import com.status.callie.model.Status;
 import com.status.callie.ui.cards.StatusCardWithList;
 
+import it.gmariotti.cardslib.library.view.CardView;
+
 /**
  * Created by om on 16/10/16.
  */
@@ -28,7 +30,8 @@ public class StatusShow extends Fragment implements View.OnClickListener {
     View view;
     private SharedPreferences shared_pref_login;
     Context context;
-    StatusCardWithList card;// = new StatusCardWithList(context);
+    StatusCardWithList card;
+    CardView cardView2;
 
     public StatusShow() {
 
@@ -43,14 +46,18 @@ public class StatusShow extends Fragment implements View.OnClickListener {
 
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initCard();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_status_show, container, false);
         setStatusButton = (Button) view.findViewById(R.id.set_status_button);
         setStatusEditText = (EditText) view.findViewById(R.id.set_status_edit_text);
-        card = new StatusCardWithList(context);
-        card.init();
         setStatusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +72,16 @@ public class StatusShow extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+
+    }
+
+    private void initCard() {
+        card = new StatusCardWithList(context);
+        card.init();
+
+        //Set card in the cardView
+        cardView2 = (CardView) getActivity().findViewById(R.id.recent_status);
+        cardView2.setCard(card);
 
     }
 }
