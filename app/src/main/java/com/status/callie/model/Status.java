@@ -113,4 +113,42 @@ public class Status {
         });
         return null;
     }
+
+    public String getLast10Status(String token) {
+        ApiInterface apiService = null;
+        try {
+            apiService = ApiClient
+                    .getClient()
+                    .create(ApiInterface.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Log.d(TAG, "statusStore: jwt Token" + token);
+        Call<GetLast10Status> call = apiService.getLast10Status(token);
+        call.enqueue(new Callback<GetLast10Status>() {
+            @Override
+            public void onResponse(Call<GetLast10Status> call, retrofit2.Response<GetLast10Status> response) {
+                if (response.isSuccessful()) {
+                    GetLast10Status getLast10Status = response.body();
+                    Log.d(TAG, "onResponse: status" + getLast10Status.getStatus());
+                } else {
+                    ApiError error;
+                    try {
+                        error = ErrorUtils.parseError(response);
+                        Log.d("error message", error.message());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<GetLast10Status> call, Throwable t) {
+                Log.e("on failure", t.toString());
+            }
+        });
+        return null;
+    }
 }

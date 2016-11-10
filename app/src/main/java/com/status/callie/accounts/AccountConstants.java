@@ -37,4 +37,9 @@ public class AccountConstants {
     //jwt token
     public static String SHARED_PREF_LOGIN = "com.callie.status.login";
     public static String TOKEN = "token";
+
+    //last statuses
+    public static String RECENT_STATUS = "recent_statuses";
+    public static String STATUS = "status";
+    public static String UPDATED_AT = "updated_at";
 }

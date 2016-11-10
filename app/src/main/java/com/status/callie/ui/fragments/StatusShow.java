@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import it.gmariotti.cardslib.library.view.CardView;
  */
 public class StatusShow extends Fragment implements View.OnClickListener {
 
+    String TAG = "fragment_status_show";
     Button setStatusButton;
     EditText setStatusEditText;
     String textStatus;
@@ -32,6 +34,7 @@ public class StatusShow extends Fragment implements View.OnClickListener {
     Context context;
     StatusCardWithList card;
     CardView cardView2;
+    String last10Statuses;
 
     public StatusShow() {
 
@@ -56,6 +59,8 @@ public class StatusShow extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_status_show, container, false);
+        last10Statuses = status.getLast10Status(shared_pref_login.getString(AccountConstants.TOKEN, ""));
+        Log.d(TAG, "onCreateView: "+last10Statuses);
         setStatusButton = (Button) view.findViewById(R.id.set_status_button);
         setStatusEditText = (EditText) view.findViewById(R.id.set_status_edit_text);
         setStatusButton.setOnClickListener(new View.OnClickListener() {
